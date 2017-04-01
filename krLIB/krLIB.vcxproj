@@ -142,14 +142,20 @@
     <ClInclude Include="Array.h" />
     <ClInclude Include="cstring.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="String.h" />
+    <ClInclude Include="BinaryTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="cstring.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="Stack.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClCompile Include="BinaryTree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

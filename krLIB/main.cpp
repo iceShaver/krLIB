@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <ctime>
+#include "Stack.h"
 
 using namespace std;
 const size_t ILE = 10000000;
@@ -52,10 +53,39 @@ void testArray() {
 
 
 void testString() {
-	cout << "_____________________________________________" << endl;
-	cout << "String: " << endl;
+	String str = "asd";
+	String str1 = "123";
+	String str3 = str1 + str;
+	String str4;
+	str4 = str3 + str1 + str;
+	cout << str << " " << str.Length() << " " << str.Size() << endl;
+	str += "111";
+	cout << str << " " << str.Length() << " " << str.Size() << endl;
+	cout << str3 << " " << str3.Length() << " " << str3.Size() << endl;
+	cout << str4 << " " << str4.Length() << " " << str4.Size() << endl;
 }
 
+
+void testStack()
+{
+	Stack<int> stack;
+	stack.Push(new int(1324));
+	stack.Push(new int(6546));
+	stack.Push(new int(7864));
+	cout << stack.GetSize() << " ";
+	cout << *stack.Pop() << " ";
+	cout << stack.GetSize() << endl;
+	cout << stack.GetSize() << " ";
+	cout << *stack.Pop() << " ";
+	cout << stack.GetSize() << endl;
+	cout << stack.GetSize() << " ";
+	cout << *stack.Pop() << " ";
+	cout << stack.GetSize() << endl;
+	
+
+
+
+}
 int main(int argc, char *argv[]) {
 	//    Array<int> arr(10, Dynamic);
 	//
@@ -70,20 +100,11 @@ int main(int argc, char *argv[]) {
 	//testArray();
 
 
+	testStack();
 
-	
 
 
-	String str = "asd";
-	String str1 = "123";
-	String str3 = str1 + str;
-	String str4;
-	str4 = str3 + str1 + str;
-	cout << str << " " << str.Length() << " " << str.Size() << endl;
-	str += "111";
-	cout << str << " " << str.Length() << " " << str.Size() << endl;
-	cout << str3 << " " << str3.Length() << " " << str3.Size() << endl;
-	cout << str4 << " " << str4.Length() << " " << str4.Size() << endl;
+
 	int i = 0;
 
 	return 0;

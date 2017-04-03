@@ -2,6 +2,7 @@
 // Created by Kamil Królikowski on 3/19/17.
 // kamil-krolikowski@outlook.com
 // 
+#include <cstddef>
 #include "cstring.h"
 
 const char *strrev(const char *text) {

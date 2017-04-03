@@ -1,4 +1,7 @@
 #pragma once
+
+#include <cstddef>
+
 template <class IndexType, class ObjectType>
 class BinaryTree
 {

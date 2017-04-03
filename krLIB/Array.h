@@ -6,6 +6,8 @@
 #ifndef KROLIB_ARRAY_H
 #define KROLIB_ARRAY_H
 
+#include <cstddef>
+
 enum SizeManagement {
 	Static, Dynamic
 };

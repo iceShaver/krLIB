@@ -1,5 +1,6 @@
 //
 // Created by kamil on 3/30/17.
+// Array of POINTERS!!!!!
 //
 
 #ifndef KROLIB_ARRAY_H
@@ -21,13 +22,13 @@ class Array {
 	public:
 		wrapper(Array<Type> *arr, size_t index) : index(index), arr(arr) {}
 
-		operator Type() const {
+		operator Type*() const {
 			if (index < arr->size && index >= 0)
 				return *(this->arr->array + index);
 			throw OutOfRangeException();
 		}
 
-		wrapper &operator=(const Type &newObject) {
+		wrapper &operator=(Type *newObject) {
 			if (index < arr->size && index >= 0) {
 				*(arr->array + index) = newObject;
 				return *this;
@@ -53,23 +54,23 @@ public:
 
 	wrapper operator[](size_t index);
 
-	const Type &operator[](size_t index) const;
+	const Type*operator[](size_t index) const;
 
 	size_t Size() const;
 
 private:
 	void resizeArray();
-
+	void deleteArray();
 	SizeManagement sizeManagement;
-	Type *array;
+	Type **array;
 	size_t size;
-	Type *lastPtr;
+	Type **lastPtr;
 };
 
 template<class Type>
 Array<Type>::Array(size_t size, SizeManagement sizeManagement) {
 	if (size < 0) throw NegativeArraySizeException();
-	array = new Type[size]();
+	array = new Type*[size]();
 	this->size = size;
 	lastPtr = array + size - 1;
 	this->sizeManagement = sizeManagement;
@@ -80,7 +81,12 @@ Array<Type>::Array() : Array(1, Dynamic) {}
 
 template<class Type>
 Array<Type>::~Array() {
-	if (array) delete[] array;
+	//if (!array) return;
+	for (int i = 0; i < size; ++i)
+	{
+		delete array[i];
+	}
+	delete[] array;
 }
 
 template<class Type>
@@ -89,7 +95,7 @@ typename Array<Type>::wrapper Array<Type>::operator[](size_t index) {
 }
 
 template<class Type>
-const Type &Array<Type>::operator[](size_t index) const {
+const Type *Array<Type>::operator[](size_t index) const {
 	if (index < size && index >= 0)
 		return *(array + index);
 	throw OutOfRangeException();
@@ -108,16 +114,26 @@ void Array<Type>::resizeArray() {
 		newSize = size * 2;
 	else
 		newSize = 1;
-	Type *newArray = new Type[newSize]();
-	Type *oldPtr = array;
-	Type *newPtr = newArray;
+	Type **newArray = new Type*[newSize]();
+	Type **oldPtr = array;
+	Type **newPtr = newArray;
 	for (int i = 0; i < size; ++i)
 		*(newPtr++) = *(oldPtr++);
-	delete[] array;
+	deleteArray();
 	array = newArray;
 	size = newSize;
 	lastPtr = array + size - 1;
 
+}
+
+template <class Type>
+void Array<Type>::deleteArray()
+{
+	/*auto tmpPtr = array;
+	while(tmpPtr!=lastPtr)
+		delete tmpPtr++;
+	*/
+	delete[] array;
 }
 
 

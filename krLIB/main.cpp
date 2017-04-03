@@ -10,6 +10,10 @@
 using namespace std;
 const size_t ILE = 10000000;
 
+struct testStruct
+{
+	double dbl[1000];
+};
 void wbudowane() {
 	stringstream ss;
 	int *arr = new int[ILE];
@@ -24,30 +28,30 @@ void wbudowane() {
 }
 
 void moje() {
-	stringstream ss;
-	Array<int> arr;
-	for (int i = 0; i < ILE; ++i) {
-		arr[i] = i;
-	}
-	for (int i = 0; i < ILE; ++i) {
-		ss << arr[i] << " ";
-	}
+	//stringstream ss;
+	//Array<int> arr;
+	//for (int i = 0; i < ILE; ++i) {
+	//	arr[i] = new int(i);
+	//}
+	//for (int i = 0; i < ILE; ++i) {
+	//	//ss << arr[i] << " ";
+	//}
 	//delete arr;
 	//cout << ss.str();
 }
 
 void testArray() {
-	clock_t start, stop;
-	start = clock();
-	wbudowane();
-	stop = clock();
-	cout << "Zwykla tablica:" << endl;
-	cout << (double(stop - start) / CLOCKS_PER_SEC) * 1000 << " ms" << endl;
-	start = clock();
-	moje();
-	stop = clock();
-	cout << "Array" << endl;
-	cout << (double(stop - start) / CLOCKS_PER_SEC) * 1000 << " ms" << endl;
+	//clock_t start, stop;
+	//start = clock();
+	//wbudowane();
+	//stop = clock();
+	//cout << "Zwykla tablica:" << endl;
+	//cout << (double(stop - start) / CLOCKS_PER_SEC) * 1000 << " ms" << endl;
+	//start = clock();
+	//moje();
+	//stop = clock();
+	//cout << "Array" << endl;
+	//cout << (double(stop - start) / CLOCKS_PER_SEC) * 1000 << " ms" << endl;
 
 }
 
@@ -86,6 +90,17 @@ void testStack()
 
 
 }
+
+void arrayMemLeakTest()
+{
+	auto arr = new Array<double>();
+	for (int i = 0; i < 100000; ++i)
+	{
+		(*arr)[i] = new double(i);
+	}
+	delete arr;
+}
+
 int main(int argc, char *argv[]) {
 	//    Array<int> arr(10, Dynamic);
 	//
@@ -100,12 +115,12 @@ int main(int argc, char *argv[]) {
 	//testArray();
 
 
-	testStack();
-
-
-
-
-	int i = 0;
+	//testStack();
+	for (int i = 0; i < 1000; ++i)
+	{
+		arrayMemLeakTest();
+	}
+	getchar();
 
 	return 0;
 }

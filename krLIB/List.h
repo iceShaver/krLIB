@@ -13,16 +13,16 @@ template<class Type>
 class List {
 
 	class ListElement {
-public:
-	ListElement();
-	~ListElement();
-private:
-	ListElement *nextPtr;
-	ListElement *prevPtr;
-	Type *object;
-	template<class Object> friend class List;
+	public:
+		ListElement();
+		~ListElement();
+	private:
+		ListElement *nextPtr;
+		ListElement *prevPtr;
+		Type *object;
+		template<class Object> friend class List;
 
-};
+	};
 public:
 	List();
 	~List();

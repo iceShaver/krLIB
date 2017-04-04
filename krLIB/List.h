@@ -5,8 +5,7 @@
 
 #ifndef KRLIB_LIST_H
 #define KRLIB_LIST_H
-
-#include <cstdio>
+#include <cstddef>
 
 //--------------------------List class--------------------------------
 template<class Type>

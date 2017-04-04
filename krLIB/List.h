@@ -8,14 +8,9 @@
 
 #include <cstdio>
 
-//--------------------------ListElement Class----------------------------
-
-
-
 //--------------------------List class--------------------------------
 template<class Type>
 class List {
-public:
 
 	class ListElement {
 public:

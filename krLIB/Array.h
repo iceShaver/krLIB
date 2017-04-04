@@ -12,36 +12,18 @@ enum SizeManagement {
 	Static, Dynamic
 };
 
-class OutOfRangeException {
-};
+class OutOfRangeException {};
 
-class NegativeArraySizeException {
-};
+class NegativeArraySizeException {};
 
 template<class Type>
 class Array {
 	class wrapper {
 	public:
 		wrapper(Array<Type> *arr, size_t index) : index(index), arr(arr) {}
-
-		operator Type*() const {
-			if (index < arr->size && index >= 0)
-				return *(this->arr->array + index);
-			throw OutOfRangeException();
-		}
-
-		wrapper &operator=(Type *newObject) {
-			if (index < arr->size && index >= 0) {
-				*(arr->array + index) = newObject;
-				return *this;
-			}
-			if (arr->sizeManagement == Static || arr->size < 0)
-				throw OutOfRangeException();
-			while (index >= arr->size) arr->resizeArray();
-			arr->array[index] = newObject;
-			return *this;
-		}
-
+		operator Type*() const;
+		operator Type() const;
+		wrapper& operator=(Type* newObject);
 	private:
 		size_t index;
 		Array<Type> *arr;
@@ -49,20 +31,15 @@ class Array {
 
 public:
 	Array();
-
 	explicit Array(size_t, SizeManagement = Static);
-
 	~Array();
-
 	wrapper operator[](size_t index);
-
 	const Type*operator[](size_t index) const;
-
+	Type * GetLast();
 	size_t Size() const;
 
 private:
 	void resizeArray();
-	void deleteArray();
 	SizeManagement sizeManagement;
 	Type **array;
 	size_t size;
@@ -78,16 +55,44 @@ Array<Type>::Array(size_t size, SizeManagement sizeManagement) {
 	this->sizeManagement = sizeManagement;
 }
 
+template <class Type>
+Array<Type>::wrapper::operator Type*() const
+{
+	if (index < arr->size && index >= 0)
+		return *(this->arr->array + index);
+	throw OutOfRangeException();
+}
+
+template <class Type>
+Array<Type>::wrapper::operator Type() const
+{
+	if (index < arr->size && index >= 0)
+		return (this->arr->array + index);
+	throw OutOfRangeException();
+}
+
+template <class Type>
+typename Array<Type>::wrapper& Array<Type>::wrapper::operator=(Type* newObject)
+{
+	if (index < arr->size && index >= 0)
+	{
+		*(arr->array + index) = newObject;
+		return *this;
+	}
+	if (arr->sizeManagement == Static || arr->size < 0)
+		throw OutOfRangeException();
+	while (index >= arr->size) arr->resizeArray();
+	arr->array[index] = newObject;
+	return *this;
+}
+
 template<class Type>
 Array<Type>::Array() : Array(1, Dynamic) {}
 
 template<class Type>
 Array<Type>::~Array() {
-	//if (!array) return;
 	for (int i = 0; i < size; ++i)
-	{
 		delete array[i];
-	}
 	delete[] array;
 }
 
@@ -101,6 +106,12 @@ const Type *Array<Type>::operator[](size_t index) const {
 	if (index < size && index >= 0)
 		return *(array + index);
 	throw OutOfRangeException();
+}
+
+template <class Type>
+Type* Array<Type>::GetLast()
+{
+	return *lastPtr;
 }
 
 
@@ -121,22 +132,13 @@ void Array<Type>::resizeArray() {
 	Type **newPtr = newArray;
 	for (int i = 0; i < size; ++i)
 		*(newPtr++) = *(oldPtr++);
-	deleteArray();
+	delete[] array;
 	array = newArray;
 	size = newSize;
 	lastPtr = array + size - 1;
 
 }
 
-template <class Type>
-void Array<Type>::deleteArray()
-{
-	/*auto tmpPtr = array;
-	while(tmpPtr!=lastPtr)
-		delete tmpPtr++;
-	*/
-	delete[] array;
-}
 
 
 #endif //KROLIB_ARRAY_H

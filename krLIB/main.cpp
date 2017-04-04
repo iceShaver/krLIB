@@ -10,10 +10,7 @@
 using namespace std;
 const size_t ILE = 10000000;
 
-struct testStruct
-{
-	double dbl[1000];
-};
+
 void wbudowane() {
 	stringstream ss;
 	int *arr = new int[ILE];
@@ -93,10 +90,15 @@ void testStack()
 
 void arrayMemLeakTest()
 {
-	auto arr = new Array<double>();
-	for (int i = 0; i < 100000; ++i)
+	auto arr = new Array<List<int>>();
+	//cout.sync_with_stdio(false);
+
+	for (int i = 0; i < 10000000; ++i)
 	{
-		(*arr)[i] = new double(i);
+		((*arr)[i]) = new List<int>;
+		(*(*arr)[i]).PushLast(new int(i));
+		auto tmo = (*(*arr)[i]).Pop(0);
+		delete tmo;
 	}
 	delete arr;
 }
@@ -116,7 +118,7 @@ int main(int argc, char *argv[]) {
 
 
 	//testStack();
-	for (int i = 0; i < 1000; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		arrayMemLeakTest();
 	}

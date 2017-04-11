@@ -47,6 +47,9 @@ private:
 };
 
 template<class Type>
+Array<Type>::Array() : Array(1, Dynamic) {}
+
+template<class Type>
 Array<Type>::Array(size_t size, SizeManagement sizeManagement) {
 	if (size < 0) throw NegativeArraySizeException();
 	array = new Type*[size]();
@@ -54,7 +57,12 @@ Array<Type>::Array(size_t size, SizeManagement sizeManagement) {
 	lastPtr = array + size - 1;
 	this->sizeManagement = sizeManagement;
 }
-
+template<class Type>
+Array<Type>::~Array() {
+	for (int i = 0; i < size; ++i)
+		delete array[i];
+	delete[] array;
+}
 template <class Type>
 Array<Type>::wrapper::operator Type*() const
 {
@@ -86,15 +94,7 @@ typename Array<Type>::wrapper& Array<Type>::wrapper::operator=(Type* newObject)
 	return *this;
 }
 
-template<class Type>
-Array<Type>::Array() : Array(1, Dynamic) {}
 
-template<class Type>
-Array<Type>::~Array() {
-	for (int i = 0; i < size; ++i)
-		delete array[i];
-	delete[] array;
-}
 
 template<class Type>
 typename Array<Type>::wrapper Array<Type>::operator[](size_t index) {

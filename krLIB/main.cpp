@@ -92,7 +92,6 @@ void arrayMemLeakTest()
 {
 	auto arr = new Array<List<int>>();
 	//cout.sync_with_stdio(false);
-
 	for (int i = 0; i < 10000000; ++i)
 	{
 		((*arr)[i]) = new List<int>;
@@ -100,6 +99,7 @@ void arrayMemLeakTest()
 		auto tmo = (*(*arr)[i]).Pop(0);
 		delete tmo;
 	}
+	arr[126].GetLast();
 	delete arr;
 }
 

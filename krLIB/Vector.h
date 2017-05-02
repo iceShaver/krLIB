@@ -19,7 +19,7 @@ class Vector {
 	public:
 		wrapper(Vector<Type> *arr, size_t index) : index(index), arr(arr) {}
 		operator Type*() const;
-		operator Type() const;
+		explicit operator Type() const;
 		wrapper& operator=(Type* newObject);
 	private:
 		size_t index;
@@ -32,6 +32,7 @@ public:
 	~Vector();
 	wrapper operator[](size_t index);
 	const Type*operator[](size_t index) const;
+	//const Type operator[](size_t index) const;
 	Type * GetLast();
 	size_t Size() const;
 
@@ -72,7 +73,7 @@ template <class Type>
 Vector<Type>::wrapper::operator Type() const
 {
 	if (index < arr->size && index >= 0)
-		return (this->arr->array + index);
+		return **(this->arr->array + index);
 	throw OutOfRangeException();
 }
 

@@ -7,24 +7,30 @@
 #include "Stack.h"
 #include <string>
 #include "Vector.h"
+#include <future>
+#include <ostream>
 using namespace std;
 const size_t ILE = 10000000;
 
 
-void wbudowane() {
+void wbudowane()
+{
 	stringstream ss;
-	int *arr = new int[ILE];
-	for (int i = 0; i < ILE; ++i) {
+	int* arr = new int[ILE];
+	for (int i = 0; i < ILE; ++i)
+	{
 		arr[i] = i;
 	}
-	for (int i = 0; i < ILE; ++i) {
+	for (int i = 0; i < ILE; ++i)
+	{
 		ss << arr[i] << " ";
 	}
 	//cout << ss.str();
 	delete[] arr;
 }
 
-void moje() {
+void moje()
+{
 	//stringstream ss;
 	//Vector<int> arr;
 	//for (int i = 0; i < ILE; ++i) {
@@ -37,7 +43,8 @@ void moje() {
 	//cout << ss.str();
 }
 
-void testArray() {
+void testArray()
+{
 	//clock_t start, stop;
 	//start = clock();
 	//wbudowane();
@@ -49,11 +56,11 @@ void testArray() {
 	//stop = clock();
 	//cout << "Vector" << endl;
 	//cout << (double(stop - start) / CLOCKS_PER_SEC) * 1000 << " ms" << endl;
-
 }
 
 
-void testString() {
+void testString()
+{
 	//String str = "asd";
 	//String str1 = "123";
 	//String str3 = str1 + str;
@@ -82,10 +89,6 @@ void testStack()
 	cout << stack.GetSize() << " ";
 	cout << *stack.Pop() << " ";
 	cout << stack.GetSize() << endl;
-
-
-
-
 }
 
 void arrayMemLeakTest()
@@ -103,7 +106,30 @@ void arrayMemLeakTest()
 	delete arr;
 }
 
-int main(int argc, char *argv[]) {
+class TestClass
+{
+public:
+	TestClass(const String& name, int value)
+		: name(name),
+		  value(value)
+	{
+	}
+
+
+	friend std::ostream& operator<<(std::ostream& os, const TestClass& obj)
+	{
+		return os
+			<< "name: " << obj.name
+			<< " value: " << obj.value;
+	}
+
+private:
+	String name;
+	int value;
+};
+
+int main(int argc, char* argv[])
+{
 	//    Vector<int> arr(10, Dynamic);
 	//
 	//        for (int i = 0; i < 11; ++i) {
@@ -115,12 +141,17 @@ int main(int argc, char *argv[]) {
 	//            }
 	//        }
 	//testArray();
-
-
 	//testStack();
-	
+	Vector<TestClass> *vector = new Vector<TestClass>;
+	(*vector)[0] = new TestClass("Kamil", 13);
+	(*vector)[1] = new TestClass("Kami1l", 131);
+	(*vector)[2] = new TestClass("Kamil6", 133);
+	(*vector)[3] = new TestClass("Kamil6", 133);
+	cout << *(*vector)[0] << endl;
+	cout << *(*vector)[3] << endl;
+	cout << (TestClass)(*vector)[1] << endl;
+	cout << vector->Size() << endl;
 
 	getchar();
-
 	return 0;
 }

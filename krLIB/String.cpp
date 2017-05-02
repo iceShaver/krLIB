@@ -201,10 +201,43 @@ String& String::operator=(const String&other)
 	return *this;
 }
 
-char& String::operator[](size_t index) throw(OutOfRangeException)
+char& String::operator[](size_t index) const throw(OutOfRangeException)
 {
 	if (index >= length) throw OutOfRangeException();
 	return *(array+index);
+}
+
+bool String::operator==(const String& other) const
+{
+	if (compare(*this, other) == 0)return true;
+	return false;
+}
+
+bool String::operator>(const String& other) const
+{
+	if (compare(*this, other) == 1)return true;
+	return false;
+	
+}
+
+bool String::operator<(const String& other) const
+{
+	if (compare(*this, other) == -1)return true;
+	return false;
+}
+
+bool String::operator<=(const String& other) const
+{
+	int compareResult = compare(*this, other);
+	if (compareResult == 0 || compareResult == -1) return true;
+	return false;
+}
+
+bool String::operator>=(const String& other) const
+{
+	int compareResult = compare(*this, other);
+	if(compareResult==0 || compareResult==1)return true;
+	return false;
 }
 
 String& String::append(const String& appendedString)
@@ -334,6 +367,29 @@ void String::copy(const char * src, char * dst, size_t length)
 	char * dstPtr = dst;
 	for (size_t i = 0; i < length; ++i)
 		*(dstPtr++) = *(srcPtr++);
+}
+
+bool String::areEqual(const char* left, const char* right, size_t length)
+{
+	for (int i = 0; i < length; ++i)
+	{
+		if (left[i] > right[i]) return false;
+		if (left[i] < right[i]) return false;
+	}
+	return true;
+
+}
+
+int String::compare(const String& left, const String& right)
+{
+	size_t minLength = (left.length > right.length ? right.length : left.length);
+	for (int i = 0; i < minLength; ++i)
+	{
+		if (left[i] < right[i]) return -1;
+		if (left[i] > right[i])return 1;
+	}
+	if (left.length == right.length) return 0;
+	return (left.length > right.length) ? 1 : -1;
 }
 
 std::ostream& operator<<(std::ostream& ostr, const String& string)

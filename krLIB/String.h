@@ -71,7 +71,12 @@ public:
 	//____________________________________________Operators____________________________________________________
 	String &operator+=(const String &);
 	String &operator=(const String&);
-	char& operator[](size_t index)throw(OutOfRangeException);
+	char& operator[](size_t index) const throw(OutOfRangeException);
+	bool operator==(const String&other) const;
+	bool operator>(const String&other)const;
+	bool operator<(const String&other)const;
+	bool operator<=(const String&other)const;
+	bool operator>=(const String&other)const;
 
 	//______________________________________String manipulation methods________________________________________
 	String&append(const String&);
@@ -95,6 +100,8 @@ private:
 	size_t length;
 	void resize();
 	static void copy(const char *src, char *dest, size_t size);
+	static bool areEqual(const char*left, const char*right, size_t length);
+	static int compare(const String&left, const String&right);
 	friend std::ostream& operator<<(std::ostream&ostr, const String&string);
 };
 

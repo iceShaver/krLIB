@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Array.h" />
     <ClInclude Include="cstring.h" />
+    <ClInclude Include="Exception.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="cstring.cpp" />
+    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Queue.cpp" />

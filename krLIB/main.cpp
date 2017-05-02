@@ -6,7 +6,7 @@
 #include <sstream>
 #include <ctime>
 #include "Stack.h"
-
+#include <string>
 using namespace std;
 const size_t ILE = 10000000;
 
@@ -54,16 +54,16 @@ void testArray() {
 
 
 void testString() {
-	String str = "asd";
-	String str1 = "123";
-	String str3 = str1 + str;
-	String str4;
-	str4 = str3 + str1 + str;
-	cout << str << " " << str.Length() << " " << str.Size() << endl;
-	str += "111";
-	cout << str << " " << str.Length() << " " << str.Size() << endl;
-	cout << str3 << " " << str3.Length() << " " << str3.Size() << endl;
-	cout << str4 << " " << str4.Length() << " " << str4.Size() << endl;
+	//String str = "asd";
+	//String str1 = "123";
+	//String str3 = str1 + str;
+	//String str4;
+	//str4 = str3 + str1 + str;
+	//cout << str << " " << str.getLength() << " " << str.getCapacity() << endl;
+	//str += "111";
+	//cout << str << " " << str.getLength() << " " << str.getCapacity() << endl;
+	//cout << str3 << " " << str3.getLength() << " " << str3.getCapacity() << endl;
+	//cout << str4 << " " << str4.getLength() << " " << str4.getCapacity() << endl;
 }
 
 
@@ -118,10 +118,19 @@ int main(int argc, char *argv[]) {
 
 
 	//testStack();
-	for (int i = 0; i < 10; ++i)
+
+	for (int i = 0; i < 100000000; ++i)
 	{
-		arrayMemLeakTest();
+		String str = "kukli";
+		String str1 = "wincyj ";
+
+		//TODO:FIX MEM LEAK!!!!!
+		str.prepend(str1);
+		//cout << str << endl;
 	}
+
+
+	
 	getchar();
 
 	return 0;

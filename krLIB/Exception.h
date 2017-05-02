@@ -6,6 +6,9 @@ public:
 	virtual ~Exception();
 private:
 
-	
-};
 
+};
+class OutOfRangeException : Exception {};
+class InvalidArgumentException : Exception {};
+class NotImplementedException : Exception {};
+class NegativeArraySizeException : Exception {};

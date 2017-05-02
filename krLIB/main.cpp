@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 		String str1 = "wincyj ";
 
 		//TODO:FIX MEM LEAK!!!!!
-		str.prepend(str1);
+		str.append(str1);
 		//cout << str << endl;
 	}
 

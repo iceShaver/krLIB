@@ -20,6 +20,21 @@ String::operator const char*() const
 	return result;
 }
 
+String::operator long long() const
+{
+	throw NotImplementedException();
+}
+
+String::operator unsigned long long() const
+{
+	throw NotImplementedException();
+}
+
+String::operator double() const
+{
+	throw NotImplementedException();
+}
+
 
 String::String(const String& newString)
 {
@@ -173,7 +188,7 @@ String& String::append(const String& appendedString)
 	while (length + appendedString.length > capacity) resize();
 	char * newString = new char[capacity];
 	copy(array, newString, length);
-	copy(appendedString, newString + length, appendedString.length);
+	copy(appendedString.array, newString + length, appendedString.length);
 	delete[] array;
 	array = newString;
 	length += appendedString.length;
@@ -184,11 +199,11 @@ String& String::prepend(const String&prependedString)
 {
 	while (length + prependedString.length > capacity) resize();
 	char * newString = new char[capacity];
-	copy(prependedString, newString, getCStringLength(prependedString));
-	copy(array, newString + getCStringLength(prependedString), length);
+	copy(prependedString.array, newString, prependedString.length);
+	copy(array, newString + prependedString.length, length);
 	delete[]array;
 	array = newString;
-	length = getCStringLength(prependedString) + length;
+	length = prependedString.length + length;
 	return *this;
 }
 
@@ -216,7 +231,7 @@ String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 
 const char* String::c_str() const
 {
-	return *this;
+	return (const char*)(*this);
 }
 
 size_t String::getLength() const
@@ -250,7 +265,6 @@ String& operator+(const String& left, const String& right)
 {
 	String result = left;
 	return result.append(right);
-
 }
 
 String operator+(String& left, String& right)

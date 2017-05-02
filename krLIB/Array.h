@@ -7,14 +7,11 @@
 #define KROLIB_ARRAY_H
 
 #include <cstddef>
+#include "Exception.h"
 
 enum SizeManagement {
 	Static, Dynamic
 };
-
-class OutOfRangeException {};
-
-class NegativeArraySizeException {};
 
 template<class Type>
 class Array {

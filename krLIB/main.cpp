@@ -1,12 +1,12 @@
 #include "List.h"
 #include <iostream>
-#include "Array.h"
 #include "String.h"
 #include <string>
 #include <sstream>
 #include <ctime>
 #include "Stack.h"
 #include <string>
+#include "Vector.h"
 using namespace std;
 const size_t ILE = 10000000;
 
@@ -26,7 +26,7 @@ void wbudowane() {
 
 void moje() {
 	//stringstream ss;
-	//Array<int> arr;
+	//Vector<int> arr;
 	//for (int i = 0; i < ILE; ++i) {
 	//	arr[i] = new int(i);
 	//}
@@ -47,7 +47,7 @@ void testArray() {
 	//start = clock();
 	//moje();
 	//stop = clock();
-	//cout << "Array" << endl;
+	//cout << "Vector" << endl;
 	//cout << (double(stop - start) / CLOCKS_PER_SEC) * 1000 << " ms" << endl;
 
 }
@@ -82,7 +82,7 @@ void testStack()
 	cout << stack.GetSize() << " ";
 	cout << *stack.Pop() << " ";
 	cout << stack.GetSize() << endl;
-	
+
 
 
 
@@ -90,7 +90,7 @@ void testStack()
 
 void arrayMemLeakTest()
 {
-	auto arr = new Array<List<int>>();
+	auto arr = new Vector<List<int>>();
 	//cout.sync_with_stdio(false);
 	for (int i = 0; i < 10000000; ++i)
 	{
@@ -104,7 +104,7 @@ void arrayMemLeakTest()
 }
 
 int main(int argc, char *argv[]) {
-	//    Array<int> arr(10, Dynamic);
+	//    Vector<int> arr(10, Dynamic);
 	//
 	//        for (int i = 0; i < 11; ++i) {
 	//            try {
@@ -119,10 +119,6 @@ int main(int argc, char *argv[]) {
 
 	//testStack();
 
-	
-
-
-	
 	getchar();
 
 	return 0;

@@ -43,6 +43,38 @@ String::String(const String& newString)
 	copy(newString.array, array, length);
 }
 
+bool String::isLetter(const char& character)
+{
+	if (isCapitalLetter(character)||isLowerCaseLetter(character))
+		return true;
+	return false;
+}
+
+bool String::isCapitalLetter(const char& character)
+{
+	if(character>=65 && character<=90)
+		return true;
+	return false;
+}
+
+bool String::isLowerCaseLetter(const char& character)
+{
+	if (character >= 97 && character <= 122)
+		return true;
+	return false;
+
+}
+
+char String::toLower(const char& character)
+{
+	return character + 32;
+}
+
+char String::toUpper(const char& character)
+{
+	return character - 32;
+}
+
 String String::parseInt(const long long& number)
 {
 	char * tmp = new char[128];
@@ -169,6 +201,12 @@ String& String::operator=(const String&other)
 	return *this;
 }
 
+char& String::operator[](size_t index) throw(OutOfRangeException)
+{
+	if (index >= length) throw OutOfRangeException();
+	return *(array+index);
+}
+
 String& String::append(const String& appendedString)
 {
 	while (length + appendedString.length > capacity) resize();
@@ -213,6 +251,66 @@ String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 	result.array = new char[capacity];
 	copy(array + beginIndex, result.array, result.length);
 	return result;
+}
+
+String& String::toLower()
+{
+	char*ptr = array;
+	for (int i = 0; i < length; ++i)
+	{
+		if (isCapitalLetter(*ptr))
+			*ptr = toLower(*ptr);
+		ptr++;
+	}
+	return *this;
+}
+
+String& String::toUpper()
+{
+	char*ptr = array;
+	for (int i = 0; i < length; ++i)
+	{
+		if (isLowerCaseLetter(*ptr))
+			*ptr = toUpper(*ptr);
+		ptr++;
+	}
+	return *this;
+}
+
+String& String::trim()
+{
+	size_t trimStartIndex = 0;
+	char*ptr = array;
+	for (int i = 0; i < length; ++i)
+	{
+		if (*ptr != ' ')break;
+		trimStartIndex++;
+		ptr++;
+	}
+	if(trimStartIndex!=0)
+	{
+		int newLength, newCapacity;
+		newLength = newCapacity = length - trimStartIndex;
+		char * newArray = new char[newCapacity];
+		copy(array + trimStartIndex, newArray, newLength);
+		length = newLength;
+		capacity = newCapacity;
+		delete[] array;
+		array = newArray;
+	}
+	ptr = array + length - 1;
+	size_t trimStopIndex = length - 1;
+	for (int i = 0; i < length; ++i)
+	{
+		if (*ptr != ' ') break;
+		trimStopIndex--;
+		ptr--;
+	}
+	if(trimStopIndex!=length-1)
+	{
+		length = trimStopIndex + 1;
+	}
+	return *this;
 }
 
 const char* String::c_str() const

@@ -15,7 +15,12 @@ public:
 	String();
 	~String();
 	String(const String&);
-
+	//______________________________________Useful static functions__________________________________________
+	static bool isLetter(const char&character);
+	static bool isCapitalLetter(const char&character);
+	static bool isLowerCaseLetter(const char&character);
+	static char toLower(const char&character);
+	static char toUpper(const char&character);
 
 
 	//__________________________________Static conversion functions to String_________________________________
@@ -66,7 +71,7 @@ public:
 	//____________________________________________Operators____________________________________________________
 	String &operator+=(const String &);
 	String &operator=(const String&);
-	char operator[](size_t index)throw(OutOfRangeException);
+	char& operator[](size_t index)throw(OutOfRangeException);
 
 	//______________________________________String manipulation methods________________________________________
 	String&append(const String&);

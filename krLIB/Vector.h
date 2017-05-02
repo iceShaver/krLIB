@@ -1,10 +1,10 @@
 //
 // Created by kamil on 3/30/17.
-// Array of POINTERS!!!!!
+// Vector of POINTERS!!!!!
 //
 
-#ifndef KROLIB_ARRAY_H
-#define KROLIB_ARRAY_H
+#ifndef KROLIB_VECTOR_H
+#define KROLIB_VECTOR_H
 
 #include <cstddef>
 #include "Exception.h"
@@ -14,22 +14,22 @@ enum SizeManagement {
 };
 
 template<class Type>
-class Array {
+class Vector {
 	class wrapper {
 	public:
-		wrapper(Array<Type> *arr, size_t index) : index(index), arr(arr) {}
+		wrapper(Vector<Type> *arr, size_t index) : index(index), arr(arr) {}
 		operator Type*() const;
 		operator Type() const;
 		wrapper& operator=(Type* newObject);
 	private:
 		size_t index;
-		Array<Type> *arr;
+		Vector<Type> *arr;
 	};
 
 public:
-	Array();
-	explicit Array(size_t, SizeManagement = Static);
-	~Array();
+	Vector();
+	explicit Vector(size_t initSize, SizeManagement = Static);
+	~Vector();
 	wrapper operator[](size_t index);
 	const Type*operator[](size_t index) const;
 	Type * GetLast();
@@ -44,10 +44,10 @@ private:
 };
 
 template<class Type>
-Array<Type>::Array() : Array(1, Dynamic) {}
+Vector<Type>::Vector() : Vector(1, Dynamic) {}
 
 template<class Type>
-Array<Type>::Array(size_t size, SizeManagement sizeManagement) {
+Vector<Type>::Vector(size_t size, SizeManagement sizeManagement) {
 	if (size < 0) throw NegativeArraySizeException();
 	array = new Type*[size]();
 	this->size = size;
@@ -55,13 +55,13 @@ Array<Type>::Array(size_t size, SizeManagement sizeManagement) {
 	this->sizeManagement = sizeManagement;
 }
 template<class Type>
-Array<Type>::~Array() {
+Vector<Type>::~Vector() {
 	for (int i = 0; i < size; ++i)
 		delete array[i];
 	delete[] array;
 }
 template <class Type>
-Array<Type>::wrapper::operator Type*() const
+Vector<Type>::wrapper::operator Type*() const
 {
 	if (index < arr->size && index >= 0)
 		return *(this->arr->array + index);
@@ -69,7 +69,7 @@ Array<Type>::wrapper::operator Type*() const
 }
 
 template <class Type>
-Array<Type>::wrapper::operator Type() const
+Vector<Type>::wrapper::operator Type() const
 {
 	if (index < arr->size && index >= 0)
 		return (this->arr->array + index);
@@ -77,7 +77,7 @@ Array<Type>::wrapper::operator Type() const
 }
 
 template <class Type>
-typename Array<Type>::wrapper& Array<Type>::wrapper::operator=(Type* newObject)
+typename Vector<Type>::wrapper& Vector<Type>::wrapper::operator=(Type* newObject)
 {
 	if (index < arr->size && index >= 0)
 	{
@@ -94,31 +94,31 @@ typename Array<Type>::wrapper& Array<Type>::wrapper::operator=(Type* newObject)
 
 
 template<class Type>
-typename Array<Type>::wrapper Array<Type>::operator[](size_t index) {
+typename Vector<Type>::wrapper Vector<Type>::operator[](size_t index) {
 	return wrapper(this, index);
 }
 
 template<class Type>
-const Type *Array<Type>::operator[](size_t index) const {
+const Type *Vector<Type>::operator[](size_t index) const {
 	if (index < size && index >= 0)
 		return *(array + index);
 	throw OutOfRangeException();
 }
 
 template <class Type>
-Type* Array<Type>::GetLast()
+Type* Vector<Type>::GetLast()
 {
 	return *lastPtr;
 }
 
 
 template<class Type>
-size_t Array<Type>::Size() const {
+size_t Vector<Type>::Size() const {
 	return size;
 }
 
 template<class Type>
-void Array<Type>::resizeArray() {
+void Vector<Type>::resizeArray() {
 	size_t newSize;
 	if (size > 0)
 		newSize = size * 2;
@@ -138,4 +138,4 @@ void Array<Type>::resizeArray() {
 
 
 
-#endif //KROLIB_ARRAY_H
+#endif //KROLIB_VECTOR_H

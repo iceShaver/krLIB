@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Array.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="cstring.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="List.h" />
@@ -149,7 +149,7 @@
     <ClInclude Include="BinaryTree.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Array.cpp" />
+    <ClCompile Include="Vector.cpp" />
     <ClCompile Include="cstring.cpp" />
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="List.cpp" />

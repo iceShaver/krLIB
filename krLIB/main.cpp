@@ -119,15 +119,7 @@ int main(int argc, char *argv[]) {
 
 	//testStack();
 
-	for (int i = 0; i < 100000000; ++i)
-	{
-		String str = "kukli";
-		String str1 = "wincyj ";
-
-		//TODO:FIX MEM LEAK!!!!!
-		str.append(str1);
-		//cout << str << endl;
-	}
+	
 
 
 	

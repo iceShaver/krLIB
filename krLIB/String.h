@@ -94,7 +94,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&ostr, const String&string);
-String&operator+(const String&left, const String&right);
+String operator+(const String&left, const String&right);
 String operator+(String&left, String&right);
 template <typename T> String operator+(String&string, const T& other)
 {

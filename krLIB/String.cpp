@@ -3,11 +3,11 @@
 //
 #include "String.h"
 #include "Exception.h"
-String::String() : capacity(1), length(0), array(nullptr) {}
+String::String() : array(nullptr), capacity(1), length(0) {}
+
 String::String(const char * cstring) : capacity(1) {
 	length = getCStringLength(cstring);
 	capacity = length;
-	//while (length > capacity) resize();
 	array = new char[capacity];
 	copy(cstring, array, length);
 }
@@ -35,13 +35,10 @@ String::operator double() const
 	throw NotImplementedException();
 }
 
-
 String::String(const String& newString)
 {
-	//if (array) delete[]array;
 	length = newString.length;
 	capacity = newString.capacity;
-	//while (length > capacity) resize();
 	array = new char[capacity];
 	copy(newString.array, array, length);
 }
@@ -80,7 +77,6 @@ String String::parseCString(const char*cstring)
 	return result;
 }
 
-
 String String::parseDouble(const long double& number, const char *const format)
 {
 	char * tmp = new char[128];
@@ -106,18 +102,10 @@ String String::parseChar(const char& character)
 	return result;
 }
 
-
 String::~String()
 {
 	delete[] array;
 }
-
-//String& String::operator+(const String& appendedString)
-//{
-//	String * result = new String(*this);
-//	*result += appendedString;
-//	return *result;
-//}
 
 size_t String::getCStringLength(const char * cstring) {
 	size_t length = 0;
@@ -156,7 +144,6 @@ String::String(const char&character)
 	*this = parseChar(character);
 }
 
-
 void String::resize() {
 	capacity = 2 * capacity;
 	if (array) {
@@ -175,7 +162,6 @@ String& String::operator+=(const String& appendedString)
 
 String& String::operator=(const String&other)
 {
-	//delete[]array;
 	capacity = other.length;
 	length = other.length;
 	array = new char[capacity];
@@ -231,7 +217,7 @@ String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 
 const char* String::c_str() const
 {
-	return (const char*)(*this);
+	return static_cast<const char*>(*this);
 }
 
 size_t String::getLength() const
@@ -258,10 +244,9 @@ std::ostream& operator<<(std::ostream& ostr, const String& string)
 	ostr << tmp;
 	delete[] tmp;
 	return ostr;
-
 }
 
-String& operator+(const String& left, const String& right)
+String operator+(const String& left, const String& right)
 {
 	String result = left;
 	return result.append(right);
@@ -272,60 +257,3 @@ String operator+(String& left, String& right)
 	String result = left;
 	return result.append(right);
 }
-
-//String operator+(String& string, const long long& number)
-//{
-//	return string.append(number);
-//}
-//
-//String operator+(String& string, const unsigned long long& number)
-//{
-//	return string.append(number);
-//}
-//
-//String operator+(String& string, const double& number)
-//{
-//	return string.append(number);
-//}
-//
-//String operator+(String& string, const char& character)
-//{
-//	return string.append(character);
-//}
-//
-//String operator+(String& string, const char* cstring)
-//{
-//	return string.append(cstring);
-//}
-//
-//String operator+(String& string, const int& number)
-//{
-//	return string.append(number);
-//}
-//
-//String operator+(const long long& number, String& string)
-//{
-//	return string.prepend(number);
-//}
-//
-//String operator+(const unsigned long long& number, String& string)
-//{
-//	return string.prepend(number);
-//}
-//
-//String operator+(const double& number, String& string)
-//{
-//	return string.prepend(number);
-//}
-//
-//String operator+(const char& character, String& string)
-//{
-//	return string.prepend(character);
-//}
-//
-//String operator+(const char* cstring, String& string)
-//{
-//	return string.prepend(cstring);
-//}
-
-

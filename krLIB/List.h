@@ -10,18 +10,8 @@
 //--------------------------List class--------------------------------
 template<class Type>
 class List {
-
-	class ListElement {
-	public:
-		ListElement();
-		~ListElement();
-	private:
-		ListElement *nextPtr;
-		ListElement *prevPtr;
-		Type *object;
-		template<class Object> friend class List;
-
-	};
+	class Node;
+	
 public:
 	List();
 	~List();
@@ -36,15 +26,26 @@ public:
 	Type *PopLast();
 	bool Delete(int index);
 private:
-	ListElement *getElement(int index);
+	Node *getElement(int index);
 	int elementsNumber;
-	ListElement *firstPtr;
-	ListElement *lastPtr;
+	Node *firstPtr;
+	Node *lastPtr;
 };
 
-
 template <class Type>
-List<Type>::ListElement::ListElement()
+class List<Type>::Node {
+public:
+	Node();
+	~Node();
+private:
+	Node *nextPtr;
+	Node *prevPtr;
+	Type *object;
+	template<class Object> friend class List;
+
+};
+template <class Type>
+List<Type>::Node::Node()
 {
 	//printf("New list\n");
 
@@ -54,7 +55,7 @@ List<Type>::ListElement::ListElement()
 }
 
 template <class Type>
-List<Type>::ListElement::~ListElement()
+List<Type>::Node::~Node()
 {
 	if (object)
 		delete object;
@@ -69,8 +70,8 @@ List<Type>::List() {
 
 template<class Type>
 List<Type>::~List() {
-	ListElement *el = firstPtr;
-	ListElement *tmp;
+	Node *el = firstPtr;
+	Node *tmp;
 	while (el) {
 		tmp = el;
 		el = el->nextPtr;
@@ -83,7 +84,7 @@ List<Type>::~List() {
 
 template<class Type>
 bool List<Type>::PushFirst(Type *object) {
-	ListElement * element = new ListElement;
+	Node * element = new Node;
 	if (object == nullptr) {
 		//printf("Given pointer is nullptr");
 		return false;
@@ -108,7 +109,7 @@ bool List<Type>::PushFirst(Type *object) {
 
 template <class Type>
 bool List<Type>::PushLast(Type *object) {
-	ListElement *element = new ListElement;
+	Node *element = new Node;
 	if (object == nullptr) {
 		printf("Given pointer is nullptr\n");
 		return false;
@@ -132,7 +133,7 @@ bool List<Type>::PushLast(Type *object) {
 }
 template<class Type>
 Type *List<Type>::Get(int index) const {
-	ListElement *element = firstPtr;
+	Node *element = firstPtr;
 	int i = 0;
 	while (element != nullptr) {
 		if (i++ == index) return element->object;
@@ -143,7 +144,7 @@ Type *List<Type>::Get(int index) const {
 
 template<class Type>
 Type *List<Type>::Pop(int index) {
-	ListElement *element = firstPtr;
+	Node *element = firstPtr;
 	bool found = false;
 	int i = 0;
 	while (element != nullptr) {
@@ -190,7 +191,7 @@ Type *List<Type>::GetFirst() const {
 template<class Type>
 Type *List<Type>::PopFirst() {
 	if (firstPtr == nullptr) return nullptr;
-	ListElement *element = firstPtr;
+	Node *element = firstPtr;
 	firstPtr = element->nextPtr;
 	if (lastPtr == element)
 		lastPtr = nullptr;
@@ -203,7 +204,7 @@ Type *List<Type>::PopFirst() {
 }
 template<class Type> Type *List<Type>::PopLast() {
 	if (!lastPtr) return nullptr;
-	ListElement *element = lastPtr;
+	Node *element = lastPtr;
 	lastPtr = element->prevPtr;
 	if (firstPtr == element)
 		firstPtr = nullptr;
@@ -216,7 +217,7 @@ template<class Type> Type *List<Type>::PopLast() {
 }
 template<class Type>
 bool List<Type>::Delete(int index) {
-	ListElement *element = getElement(index);
+	Node *element = getElement(index);
 	if (element == nullptr) return false;
 
 
@@ -246,8 +247,8 @@ bool List<Type>::Delete(int index) {
 }
 
 template<class Type>
-typename List<Type>::ListElement *List<Type>::getElement(int index) {
-	ListElement *element = firstPtr;
+typename List<Type>::Node *List<Type>::getElement(int index) {
+	Node *element = firstPtr;
 	int i = 0;
 	while (element != nullptr) {
 		if (i++ == index) return element;

@@ -131,28 +131,22 @@ private:
 
 int main(int argc, char* argv[])
 {
-	//    Vector<int> arr(10, Dynamic);
-	//
-	//        for (int i = 0; i < 11; ++i) {
-	//            try {
-	//            arr[i] = i;
-	//            cout << arr[i] << endl;
-	//            }catch(OutOfRangeException){
-	//                cout << i <<" - Brak takiego elementu w tablicy"<<endl;
-	//            }
-	//        }
-	//testArray();
-	//testStack();
-	String s = "asd";
-	Vector<TestClass> *vector = new Vector<TestClass>;
-	(*vector)[0] = new TestClass("Kamil", 13);
-	(*vector)[1] = new TestClass("Kami1l", 131);
-	(*vector)[2] = new TestClass("Kamil6", 133);
-	(*vector)[3] = new TestClass("Kamil6", 133);
-	cout << *(*vector)[0] << endl;
-	cout << *(*vector)[3] << endl;
-	cout << (TestClass)(*vector)[1] << endl;
-	cout << vector->getSize() << endl;
+	Vector<TestClass> vector(10);
+	vector[0] = new TestClass("Kamil", 13);
+	vector[1] = new TestClass("Kami1l", 131);
+	vector[2] = new TestClass("Kamil6", 133);
+	vector[3] = new TestClass("Kamil6", 133);
+	for (TestClass* testClass : vector)
+	{
+		if (testClass)
+			cout << *testClass<<endl;
+
+	}
+
+	cout << *vector[0] << endl;
+	cout << *vector[3] << endl;
+	cout << (TestClass)(vector)[1] << endl;
+	cout << vector.getSize() << endl;
 	string fd;
 	getchar();
 	return 0;

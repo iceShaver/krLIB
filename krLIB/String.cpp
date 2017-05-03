@@ -14,6 +14,7 @@ String::String(const char * cstring) : capacity(1) {
 
 String::operator const char*() const
 {
+	if (!this) throw NullReferenceException();
 	char *result = new char[length + 1];
 	copy(array, result, length);
 	*(result + length) = '\0';
@@ -436,6 +437,7 @@ String::Iterator::~Iterator()
 
 String::Iterator::Type& String::Iterator::operator*() const
 {
+	if (!ptr)throw NullReferenceException();
 	return *ptr;
 }
 
@@ -521,6 +523,7 @@ bool String::Iterator::operator<=(const Iterator& other) const
 	return ptr <= other.ptr;
 }
 
-String::Iterator::Iterator(Type* ptr) :ptr(ptr)
+String::Iterator::Iterator(Type* ptr):ptr(ptr)
 {
+
 }

@@ -128,6 +128,9 @@ template <typename T> String operator+(const T& other, String& string)
 //________________________________________Iterator class_____________________________________
 class String::Iterator
 {
+	//TODO: care lastPtr &firstPtr bounds
+	//TODO: make String.begin(), end() return lastPtr, firstPtr
+	//TODO: care uninitialized pointer
 	typedef char Type;
 	typedef int OffsetType;
 public:
@@ -135,7 +138,7 @@ public:
 	Iterator(const Iterator&other);
 	~Iterator();
 
-	Type& operator*()const;
+	Type& operator*()const throw(NullReferenceException);
 	//Type* operator->()const;
 	Iterator& operator++();
 	Iterator operator++(int);

@@ -6,13 +6,14 @@
 #ifndef KRLIB_LIST_H
 #define KRLIB_LIST_H
 #include <cstddef>
+#include "Exception.h"
 
-//--------------------------List class--------------------------------
+//________________________________List header____________________________________
 template<class Type>
 class List {
 	class Node;
-	
 public:
+	class Iterator;
 	List();
 	~List();
 	bool PushFirst(Type *object);
@@ -25,13 +26,18 @@ public:
 	Type *PopFirst();
 	Type *PopLast();
 	bool Delete(int index);
+	Iterator begin();
+	Iterator end();
 private:
 	Node *getElement(int index);
 	int elementsNumber;
+	long indexCounter;
 	Node *firstPtr;
 	Node *lastPtr;
+	friend Iterator;
 };
 
+//____________________________Node header__________________________________
 template <class Type>
 class List<Type>::Node {
 public:
@@ -41,14 +47,59 @@ private:
 	Node *nextPtr;
 	Node *prevPtr;
 	Type *object;
-	template<class Object> friend class List;
+	long index;
+	bool operator==(const Node&other)const;
+	bool operator!=(const Node&other)const;
+	bool operator>(const Node&other)const;
+	bool operator>=(const Node&other)const;
+	bool operator<(const Node&other)const;
+	bool operator<=(const Node&other)const;
+
+	friend class List;
 
 };
+
+//__________________________Iterator header_________________________________
+template <class Type>
+class List<Type>::Iterator
+{
+	typedef int OffsetType;
+public:
+	Iterator();
+	Iterator(const Iterator&other);
+	~Iterator();
+
+	Type* operator*()const;
+	//Type* operator->()const;
+	Iterator& operator++();
+	Iterator operator++(int);
+	Iterator& operator--();
+	Iterator operator--(int);
+	Iterator& operator+=(OffsetType offset);
+	Iterator operator+(OffsetType offset)const;
+	Iterator& operator-=(OffsetType offset);
+	Iterator operator-(OffsetType offset)const;
+	bool operator==(const Iterator&other)const;
+	bool operator!=(const Iterator&other)const;
+	bool operator>(const Iterator&other)const;
+	bool operator>=(const Iterator&other)const;
+	bool operator<(const Iterator&other)const;
+	bool operator<=(const Iterator&other)const;
+private:
+	Iterator(Node*node, bool end);
+	Node*node;
+	bool end;
+	friend List;
+};
+
+
+
+//______________________Node implementation______________________________
 template <class Type>
 List<Type>::Node::Node()
 {
 	//printf("New list\n");
-
+	index = 0;
 	nextPtr = nullptr;
 	prevPtr = nullptr;
 	object = nullptr;
@@ -61,9 +112,201 @@ List<Type>::Node::~Node()
 		delete object;
 }
 
+template <class Type>
+bool List<Type>::Node::operator==(const Node& other) const
+{
+	return object == other.object;
+}
+
+template <class Type>
+bool List<Type>::Node::operator!=(const Node& other) const
+{
+	return object != other.object;
+}
+
+template <class Type>
+bool List<Type>::Node::operator>(const Node& other) const
+{
+	return index > other.index;
+}
+
+template <class Type>
+bool List<Type>::Node::operator>=(const Node& other) const
+{
+	return index >= other.index;
+}
+
+template <class Type>
+bool List<Type>::Node::operator<(const Node& other) const
+{
+	return index < other.index;
+}
+
+template <class Type>
+bool List<Type>::Node::operator<=(const Node& other) const
+{
+	return index <= other.index;
+}
+
+//_________________________Iterator implementation______________________
+template <class Type>
+List<Type>::Iterator::Iterator() : node(nullptr), end(false)
+{
+}
+
+template <class Type>
+List<Type>::Iterator::Iterator(const Iterator& other) : node(other.node), end(other.end)
+{
+}
+
+template <class Type>
+List<Type>::Iterator::~Iterator()
+{
+}
+
+template <class Type>
+Type* List<Type>::Iterator::operator*() const
+{
+	if (!node || end)throw NullReferenceException();
+	return node->object;
+}
+
+template <class Type>
+typename List<Type>::Iterator& List<Type>::Iterator::operator++()
+{
+	if (!node->nextPtr) {
+		end = true;
+		return *this;
+	}
+	end = false;
+	node = node->nextPtr;
+	return *this;
+}
+
+template <class Type>
+typename List<Type>::Iterator List<Type>::Iterator::operator++(int)
+{
+	if (end) throw OutOfRangeException();
+	if (!node->nextPtr)
+	{
+		end = true;
+		return *this;
+	}
+	end = false;
+	Iterator tmp = *this;
+	node = node->nextPtr;
+	return tmp;
+}
+
+template <class Type>
+typename List<Type>::Iterator& List<Type>::Iterator::operator--()
+{
+	if (!node->prevPtr) throw OutOfRangeException();
+	node = node->prevPtr;
+	end = false;
+	return *this;
+}
+
+template <class Type>
+typename List<Type>::Iterator List<Type>::Iterator::operator--(int)
+{
+	if (!node->prevPtr)throw OutOfRangeException();
+	Iterator tmp = *this;
+	node = node->prevPtr;
+	end = false;
+	return tmp;
+}
+
+template <class Type>
+typename List<Type>::Iterator& List<Type>::Iterator::operator+=(OffsetType offset)
+{
+	if (offset > 0)
+		while (offset--)
+			this->operator++();
+	else if (offset < 0)
+		while (offset++)
+			this->operator--();
+	return *this;
+
+}
+
+template <class Type>
+typename List<Type>::Iterator List<Type>::Iterator::operator+(OffsetType offset) const
+{
+	Iterator tmp = *this;
+	tmp += offset;
+	return tmp;
+}
+
+template <class Type>
+typename List<Type>::Iterator& List<Type>::Iterator::operator-=(OffsetType offset)
+{
+	if (offset > 0)
+		while (offset--)
+			this->operator--();
+	else if (offset < 0)
+		while (offset++)
+			this->operator++();
+	return *this;
+}
+
+template <class Type>
+typename List<Type>::Iterator List<Type>::Iterator::operator-(OffsetType offset) const
+{
+	Iterator tmp = *this;
+	tmp -= offset;
+	return tmp;
+}
+
+template <class Type>
+bool List<Type>::Iterator::operator==(const Iterator& other) const
+{
+	return (node == other.node && end == other.end);
+}
+
+template <class Type>
+bool List<Type>::Iterator::operator!=(const Iterator& other) const
+{
+	return !this->operator==(other);
+}
+
+template <class Type>
+bool List<Type>::Iterator::operator>(const Iterator& other) const
+{
+	return node->index > other->node->index;
+}
+
+template <class Type>
+bool List<Type>::Iterator::operator>=(const Iterator& other) const
+{
+	return node->index >= other->node->index;
+}
+
+template <class Type>
+bool List<Type>::Iterator::operator<(const Iterator& other) const
+{
+	return node->index < other->node->index;
+
+}
+
+template <class Type>
+bool List<Type>::Iterator::operator<=(const Iterator& other) const
+{
+	return node->index <= other->node->index;
+
+}
+
+template <class Type>
+List<Type>::Iterator::Iterator(Node* node, bool end):node(node), end(end)
+{
+}
+
+
+//_______________________List implementation______________________________
 template<class Type>
 List<Type>::List() {
 	elementsNumber = 0;
+	indexCounter = 0;
 	firstPtr = nullptr;
 	lastPtr = nullptr;
 }
@@ -79,16 +322,13 @@ List<Type>::~List() {
 	}
 }
 
-
-
-
 template<class Type>
 bool List<Type>::PushFirst(Type *object) {
-	Node * element = new Node;
 	if (object == nullptr) {
-		//printf("Given pointer is nullptr");
+		throw NullReferenceException();
 		return false;
 	}
+	Node * element = new Node;
 	elementsNumber++;
 	//If there is no elements in the list
 	if (firstPtr == nullptr) {
@@ -104,6 +344,7 @@ bool List<Type>::PushFirst(Type *object) {
 		firstPtr = element;
 	}
 	element->object = object;
+	element->index = -(indexCounter++);
 	return true;
 }
 
@@ -111,6 +352,7 @@ template <class Type>
 bool List<Type>::PushLast(Type *object) {
 	Node *element = new Node;
 	if (object == nullptr) {
+		throw NullReferenceException();
 		printf("Given pointer is nullptr\n");
 		return false;
 	}
@@ -129,6 +371,7 @@ bool List<Type>::PushLast(Type *object) {
 		lastPtr = element;
 	}
 	element->object = object;
+	element->index = indexCounter++;
 	return true;
 }
 template<class Type>
@@ -244,6 +487,18 @@ bool List<Type>::Delete(int index) {
 	elementsNumber--;
 	delete element;
 	return true;
+}
+
+template <class Type>
+typename List<Type>::Iterator List<Type>::begin()
+{
+	return Iterator(firstPtr, false);
+}
+
+template <class Type>
+typename List<Type>::Iterator List<Type>::end()
+{
+	return Iterator(lastPtr, true);
 }
 
 template<class Type>

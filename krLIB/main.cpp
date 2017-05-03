@@ -131,23 +131,23 @@ private:
 
 int main(int argc, char* argv[])
 {
-	Vector<TestClass> vector(10);
-	vector[0] = new TestClass("Kamil", 13);
-	vector[1] = new TestClass("Kami1l", 131);
-	vector[2] = new TestClass("Kamil6", 133);
-	vector[3] = new TestClass("Kamil6", 133);
-	for (TestClass* testClass : vector)
+	List<TestClass>list;
+	list.PushFirst(new TestClass("Kamil", 123));
+	list.PushLast(new TestClass("Kamil1", 234));
+	list.PushLast(new TestClass("Kamil13", 4234));
+	list.PushLast(new TestClass("Kamil513", 4234));
+	list.PushLast(new TestClass("Kamil1/3", 4234));
+	list.PushLast(new TestClass("Kamil1g3", 4234));
+	list.PushLast(new TestClass("Kamil1b3", 4234));
+	list.PushLast(new TestClass("Kamil133", 4234));
+	list.PushLast(new TestClass("Kamil113", 4234));
+	list.PushLast(new TestClass("Kamil1d3", 4234));
+	list.PushLast(new TestClass("Kamil1x3", 54234));
+
+	for (TestClass* testClass : list)
 	{
-		if (testClass)
-			cout << *testClass<<endl;
-
+		cout << *testClass << endl;
 	}
-
-	cout << *vector[0] << endl;
-	cout << *vector[3] << endl;
-	cout << (TestClass)(vector)[1] << endl;
-	cout << vector.getSize() << endl;
-	string fd;
 	getchar();
 	return 0;
 }

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="cstring.h" />
     <ClInclude Include="Exception.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="BinaryTree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="cstring.cpp" />
     <ClCompile Include="Exception.cpp" />

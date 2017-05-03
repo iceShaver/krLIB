@@ -32,9 +32,8 @@ public:
 	~Vector();
 	wrapper operator[](size_t index);
 	const Type*operator[](size_t index) const;
-	//const Type operator[](size_t index) const;
 	Type * GetLast();
-	size_t Size() const;
+	size_t getSize() const;
 
 private:
 	void resizeArray();
@@ -114,7 +113,7 @@ Type* Vector<Type>::GetLast()
 
 
 template<class Type>
-size_t Vector<Type>::Size() const {
+size_t Vector<Type>::getSize() const {
 	return size;
 }
 

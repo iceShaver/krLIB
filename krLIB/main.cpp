@@ -9,6 +9,7 @@
 #include "Vector.h"
 #include <future>
 #include <ostream>
+#include <cctype>
 using namespace std;
 const size_t ILE = 10000000;
 
@@ -142,6 +143,7 @@ int main(int argc, char* argv[])
 	//        }
 	//testArray();
 	//testStack();
+	String s = "asd";
 	Vector<TestClass> *vector = new Vector<TestClass>;
 	(*vector)[0] = new TestClass("Kamil", 13);
 	(*vector)[1] = new TestClass("Kami1l", 131);
@@ -150,8 +152,8 @@ int main(int argc, char* argv[])
 	cout << *(*vector)[0] << endl;
 	cout << *(*vector)[3] << endl;
 	cout << (TestClass)(*vector)[1] << endl;
-	cout << vector->Size() << endl;
-
+	cout << vector->getSize() << endl;
+	string fd;
 	getchar();
 	return 0;
 }

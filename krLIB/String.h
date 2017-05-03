@@ -12,10 +12,11 @@
 
 class String {
 public:
+	class Iterator;
 	String();
 	~String();
 	String(const String&);
-	//______________________________________Useful static functions__________________________________________
+	//____________________________________Useful static functions__________________________________________
 	static bool isLetter(const char&character);
 	static bool isCapitalLetter(const char&character);
 	static bool isLowerCaseLetter(const char&character);
@@ -23,14 +24,14 @@ public:
 	static char toUpper(const char&character);
 
 
-	//__________________________________Static conversion functions to String_________________________________
+	//________________________________Static conversion functions to String________________________________
 	static String parseInt(const long long& number);
 	static String parseUInt(const unsigned long long& number);
 	static String parseCString(const char *);
 	static String parseDouble(const long double&number, const char*const format = nullptr);
 	static String parseChar(const char & character);
 
-	//________________________________________Converting constructors___________________________________________
+	//_____________________________________Converting constructors_________________________________________
 	String(const int&);
 	String(const long long int&);
 	String(const unsigned long long int&);
@@ -40,7 +41,7 @@ public:
 	String(const char *);
 
 
-	//__________________________________________Converting operators___________________________________________
+	//________________________________________Converting operators_________________________________________
 
 	/**
 	 * \brief returns new const char * with content of a string
@@ -68,7 +69,7 @@ public:
 	explicit operator double()const;
 
 
-	//____________________________________________Operators____________________________________________________
+	//___________________________________________Operators_________________________________________________
 	String &operator+=(const String &);
 	String &operator=(const String&);
 	char& operator[](size_t index) const throw(OutOfRangeException);
@@ -78,7 +79,7 @@ public:
 	bool operator<=(const String&other)const;
 	bool operator>=(const String&other)const;
 
-	//______________________________________String manipulation methods________________________________________
+	//____________________________________String manipulation methods______________________________________
 	String&append(const String&);
 	String&prepend(const String&);
 	String substring(size_t beginIndex, size_t endIndex)const throw(OutOfRangeException);
@@ -88,11 +89,15 @@ public:
 	String&trim();
 
 
-	//________________________________________Others__________________________________________________________
+	//________________________________________Others_______________________________________________________
 	const char*c_str()const;
 	size_t getLength() const;
 	size_t getCapacity() const;
 	static size_t getCStringLength(const char*);
+
+	//______________________________________Iterators______________________________________________________
+	Iterator begin()const;
+	Iterator end()const;
 protected:
 private:
 	char *array;
@@ -114,10 +119,42 @@ template <typename T> String operator+(String&string, const T& other)
 	return result.append(other);
 }
 
-template <typename  T> String operator+(const T& other, String& string)
+template <typename T> String operator+(const T& other, String& string)
 {
 	String result = string;
 	return result.prepend(other);
 }
+
+//________________________________________Iterator class_____________________________________
+class String::Iterator
+{
+	typedef char Type;
+	typedef int OffsetType;
+public:
+	Iterator();
+	Iterator(const Iterator&other);
+	~Iterator();
+
+	Type& operator*()const;
+	//Type* operator->()const;
+	Iterator& operator++();
+	Iterator operator++(int);
+	Iterator& operator--();
+	Iterator operator--(int);
+	Iterator& operator+=(OffsetType offset);
+	Iterator operator+(OffsetType offset)const;
+	Iterator& operator-=(OffsetType offset);
+	Iterator operator-(OffsetType offset)const;
+	bool operator==(const Iterator&other)const;
+	bool operator!=(const Iterator&other)const;
+	bool operator>(const Iterator&other)const;
+	bool operator>=(const Iterator&other)const;
+	bool operator<(const Iterator&other)const;
+	bool operator<=(const Iterator&other)const;
+private:
+	explicit Iterator(Type*ptr);
+	Type*ptr;
+	friend String;
+};
 
 #endif //KROLIB_STRING_H

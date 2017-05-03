@@ -45,14 +45,14 @@ String::String(const String& newString)
 
 bool String::isLetter(const char& character)
 {
-	if (isCapitalLetter(character)||isLowerCaseLetter(character))
+	if (isCapitalLetter(character) || isLowerCaseLetter(character))
 		return true;
 	return false;
 }
 
 bool String::isCapitalLetter(const char& character)
 {
-	if(character>=65 && character<=90)
+	if (character >= 65 && character <= 90)
 		return true;
 	return false;
 }
@@ -146,6 +146,16 @@ size_t String::getCStringLength(const char * cstring) {
 	return length;
 }
 
+String::Iterator String::begin() const
+{
+	return Iterator(array);
+}
+
+String::Iterator String::end() const
+{
+	return  Iterator(array + length);
+}
+
 String::String(const int&number)
 {
 	*this = parseInt(number);
@@ -204,7 +214,7 @@ String& String::operator=(const String&other)
 char& String::operator[](size_t index) const throw(OutOfRangeException)
 {
 	if (index >= length) throw OutOfRangeException();
-	return *(array+index);
+	return *(array + index);
 }
 
 bool String::operator==(const String& other) const
@@ -217,7 +227,7 @@ bool String::operator>(const String& other) const
 {
 	if (compare(*this, other) == 1)return true;
 	return false;
-	
+
 }
 
 bool String::operator<(const String& other) const
@@ -236,7 +246,7 @@ bool String::operator<=(const String& other) const
 bool String::operator>=(const String& other) const
 {
 	int compareResult = compare(*this, other);
-	if(compareResult==0 || compareResult==1)return true;
+	if (compareResult == 0 || compareResult == 1)return true;
 	return false;
 }
 
@@ -320,7 +330,7 @@ String& String::trim()
 		trimStartIndex++;
 		ptr++;
 	}
-	if(trimStartIndex!=0)
+	if (trimStartIndex != 0)
 	{
 		int newLength, newCapacity;
 		newLength = newCapacity = length - trimStartIndex;
@@ -339,7 +349,7 @@ String& String::trim()
 		trimStopIndex--;
 		ptr--;
 	}
-	if(trimStopIndex!=length-1)
+	if (trimStopIndex != length - 1)
 	{
 		length = trimStopIndex + 1;
 	}
@@ -410,4 +420,107 @@ String operator+(String& left, String& right)
 {
 	String result = left;
 	return result.append(right);
+}
+//__________________________________Iterator implementation______________________________
+String::Iterator::Iterator() :ptr(nullptr)
+{
+}
+
+String::Iterator::Iterator(const Iterator& other) : ptr(other.ptr)
+{
+}
+
+String::Iterator::~Iterator()
+{
+}
+
+String::Iterator::Type& String::Iterator::operator*() const
+{
+	return *ptr;
+}
+
+String::Iterator& String::Iterator::operator++()
+{
+	ptr++;
+	return *this;
+}
+
+String::Iterator String::Iterator::operator++(int)
+{
+	Iterator tmp = *this;
+	ptr++;
+	return tmp;
+}
+
+String::Iterator& String::Iterator::operator--()
+{
+	ptr--;
+	return *this;
+}
+
+String::Iterator String::Iterator::operator--(int)
+{
+	Iterator tmp = *this;
+	ptr--;
+	return tmp;
+}
+
+String::Iterator& String::Iterator::operator+=(OffsetType offset)
+{
+	ptr += offset;
+	return *this;
+}
+
+String::Iterator String::Iterator::operator+(OffsetType offset) const
+{
+	Iterator newIt = *this;
+	newIt += offset;
+	return newIt;
+}
+
+String::Iterator& String::Iterator::operator-=(OffsetType offset)
+{
+	ptr -= offset;
+	return *this;
+}
+
+String::Iterator String::Iterator::operator-(OffsetType offset) const
+{
+	Iterator newIt = *this;
+	newIt -= offset;
+	return newIt;
+}
+
+bool String::Iterator::operator==(const Iterator& other) const
+{
+	return ptr == other.ptr;
+}
+
+bool String::Iterator::operator!=(const Iterator& other) const
+{
+	return ptr != other.ptr;
+}
+
+bool String::Iterator::operator>(const Iterator& other) const
+{
+	return ptr > other.ptr;
+}
+
+bool String::Iterator::operator>=(const Iterator& other) const
+{
+	return ptr >= other.ptr;
+}
+
+bool String::Iterator::operator<(const Iterator& other) const
+{
+	return ptr < other.ptr;
+}
+
+bool String::Iterator::operator<=(const Iterator& other) const
+{
+	return ptr <= other.ptr;
+}
+
+String::Iterator::Iterator(Type* ptr) :ptr(ptr)
+{
 }

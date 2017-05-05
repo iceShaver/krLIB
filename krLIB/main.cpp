@@ -10,6 +10,8 @@
 #include <future>
 #include <ostream>
 #include <cctype>
+#include "RedBlackTree.h"
+#include <map>
 using namespace std;
 const size_t ILE = 10000000;
 
@@ -112,10 +114,21 @@ class TestClass
 public:
 	TestClass(const String& name, int value)
 		: name(name),
-		  value(value)
+		value(value)
 	{
 	}
 
+
+	friend bool operator==(const TestClass& lhs, const TestClass& rhs)
+	{
+		return lhs.name == rhs.name
+			&& lhs.value == rhs.value;
+	}
+
+	friend bool operator!=(const TestClass& lhs, const TestClass& rhs)
+	{
+		return !(lhs == rhs);
+	}
 
 	friend std::ostream& operator<<(std::ostream& os, const TestClass& obj)
 	{
@@ -128,26 +141,49 @@ private:
 	String name;
 	int value;
 };
-
+//String substring, resize fixed
 int main(int argc, char* argv[])
 {
-	List<TestClass>list;
-	list.PushFirst(new TestClass("Kamil", 123));
-	list.PushLast(new TestClass("Kamil1", 234));
-	list.PushLast(new TestClass("Kamil13", 4234));
-	list.PushLast(new TestClass("Kamil513", 4234));
-	list.PushLast(new TestClass("Kamil1/3", 4234));
-	list.PushLast(new TestClass("Kamil1g3", 4234));
-	list.PushLast(new TestClass("Kamil1b3", 4234));
-	list.PushLast(new TestClass("Kamil133", 4234));
-	list.PushLast(new TestClass("Kamil113", 4234));
-	list.PushLast(new TestClass("Kamil1d3", 4234));
-	list.PushLast(new TestClass("Kamil1x3", 54234));
+	/*RedBlackTree<int, int> rbt;
+	rbt.push(new int(1), new int(1));
+	rbt.push(new int(2), new int(1));
+	rbt.push(new int(3), new int(1));
+	rbt.push(new int(4), new int(1));
+	rbt.push(new int(8), new int(1));
+	rbt.push(new int(6), new int(1));
+	rbt.push(new int(9), new int(1));
+	rbt.push(new int(4), new int(1));
+	rbt.push(new int(3), new int(1));
 
-	for (TestClass* testClass : list)
+
+	String cr, cl, cp;
+	cr = cl = cp = "  ";
+	cout << (cr[0] = 218) << " " << cr.getLength() << endl;
+	cout << (cr[1] = 196) << " " << cr.getLength() << endl;
+	cout << (cl[0] = 192) << " " << cl.getLength() << endl;
+	cout << (cl[1] = 196) << " " << cl.getLength() << endl;
+	cout << (cp[0] = 179) << " " << cp.getLength() << endl;
+	cout << "___________________" << endl;
+
+	string crs, cls, cps;
+	crs = cls = cps = "  ";
+	cout << (crs[0] = 218) << " " << crs.length() << endl;
+	cout << (crs[1] = 196) << " " << crs.length() << endl;
+	cout << (cls[0] = 192) << " " << cls.length() << endl;
+	cout << (cls[1] = 196) << " " << cls.length() << endl;
+	cout << (cps[0] = 179) << " " << cps.length() << endl;*/
+
+	RedBlackTree<int, int> rbt;
+	for (int i = 0; i < 3; ++i)
+		rbt.push(new int(i), new int(i));
+
+	RedBlackTree<int, int>::Iterator it = rbt.begin();
+
+	for (RedBlackTree<int, int>::Iterator it = rbt.begin(); it!=rbt.end();++it)
 	{
-		cout << *testClass << endl;
+		cout << **it << endl;
 	}
+
 	getchar();
 	return 0;
 }

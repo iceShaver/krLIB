@@ -14,6 +14,7 @@ class List {
 	class Node;
 public:
 	class Iterator;
+	//TOD:ADD copy constr
 	List();
 	~List();
 	bool PushFirst(Type *object);

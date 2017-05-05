@@ -82,7 +82,7 @@ public:
 	//____________________________________String manipulation methods______________________________________
 	String&append(const String&);
 	String&prepend(const String&);
-	String substring(size_t beginIndex, size_t endIndex)const throw(OutOfRangeException);
+	String substring(size_t beginIndex, size_t count)const throw(OutOfRangeException);
 	String substring(size_t beginIndex)const throw(OutOfRangeException);
 	String&toLower();
 	String&toUpper();

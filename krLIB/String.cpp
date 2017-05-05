@@ -188,6 +188,8 @@ String::String(const char&character)
 }
 
 void String::resize() {
+	if (capacity == 0)
+		capacity = 1;
 	capacity = 2 * capacity;
 	if (array) {
 		char * newArray = new char[capacity];
@@ -275,13 +277,14 @@ String& String::prepend(const String&prependedString)
 	return *this;
 }
 
-String String::substring(size_t beginIndex, size_t endIndex) const throw(OutOfRangeException)
+String String::substring(size_t beginIndex, size_t count) const throw(OutOfRangeException)
 {
+	if (beginIndex>=length) return String("");
 	if (beginIndex >= length) throw OutOfRangeException();
-	if (endIndex >= length)throw OutOfRangeException();
-	if (beginIndex > endIndex) throw InvalidArgumentException();
+	if (count > length)count = length-beginIndex;
+	//if (beginIndex > count) throw InvalidArgumentException();
 	String result;
-	result.capacity = result.length = endIndex - beginIndex + 1;
+	result.capacity = result.length = count;
 	result.array = new char[capacity];
 	copy(array + beginIndex, result.array, result.length);
 	return result;

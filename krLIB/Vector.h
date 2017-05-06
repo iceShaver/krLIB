@@ -26,6 +26,7 @@ public:
 	Wrapper operator[](size_t index);
 	const Type*operator[](size_t index) const;
 	Type * GetLast();
+	void pushLast(Type*object);
 	size_t getSize() const;
 	Iterator begin()const;
 	Iterator end()const;
@@ -36,6 +37,7 @@ private:
 	Type **array;
 	size_t size;
 	Type **lastPtr;
+	size_t tailIndex;
 };
 
 //___________________________________Wrapper header_______________________________________
@@ -91,7 +93,7 @@ template<class Type>
 Vector<Type>::Vector() : Vector(1, Dynamic) {}
 
 template <class Type>
-Vector<Type>::Vector(const Vector& other):sizeManagement(other.sizeManagement),array(new Type*[other.size]), size(other.size)
+Vector<Type>::Vector(const Vector& other):sizeManagement(other.sizeManagement),array(new Type*[other.size]), size(other.size),tailIndex(other.tailIndex)
 {
 	for (int i = 0; i < size; ++i)
 		*(array[i]) = *(other.array[i]);
@@ -99,7 +101,7 @@ Vector<Type>::Vector(const Vector& other):sizeManagement(other.sizeManagement),a
 }
 
 template<class Type>
-Vector<Type>::Vector(size_t size, SizeManagement sizeManagement) {
+Vector<Type>::Vector(size_t size, SizeManagement sizeManagement):tailIndex(0) {
 	if (size < 0) throw NegativeArraySizeException();
 	array = new Type*[size]();
 	this->size = size;
@@ -129,6 +131,12 @@ template <class Type>
 Type* Vector<Type>::GetLast()
 {
 	return *lastPtr;
+}
+
+template <class Type>
+void Vector<Type>::pushLast(Type* object)
+{
+	operator[](tailIndex) = object;
 }
 
 
@@ -190,12 +198,14 @@ typename Vector<Type>::Wrapper& Vector<Type>::Wrapper::operator=(Type* newObject
 	if (index < arr->size && index >= 0)
 	{
 		*(arr->array + index) = newObject;
+		arr->tailIndex = index + 1;
 		return *this;
 	}
 	if (arr->sizeManagement == Static || arr->size < 0)
 		throw OutOfRangeException();
 	while (index >= arr->size) arr->resizeArray();
 	arr->array[index] = newObject;
+	arr->tailIndex = index + 1;
 	return *this;
 }
 

@@ -10,8 +10,10 @@
 #include <future>
 #include <ostream>
 #include <cctype>
-#include "RedBlackTree.h"
 #include <map>
+#include "RedBlackTree.h"
+#include "Map.h"
+#include "Console.h"
 using namespace std;
 const size_t ILE = 10000000;
 
@@ -141,7 +143,7 @@ private:
 	String name;
 	int value;
 };
-//String substring, resize fixed
+
 int main(int argc, char* argv[])
 {
 	/*RedBlackTree<int, int> rbt;
@@ -172,18 +174,31 @@ int main(int argc, char* argv[])
 	cout << (cls[0] = 192) << " " << cls.length() << endl;
 	cout << (cls[1] = 196) << " " << cls.length() << endl;
 	cout << (cps[0] = 179) << " " << cps.length() << endl;*/
+	//srand(time(NULL));
 
-	RedBlackTree<int, int> rbt;
-	for (int i = 0; i < 3; ++i)
-		rbt.push(new int(i), new int(i));
+	//Map<string, bool> rbt;
+	//cout << "sortowanie..." << endl;
+	//for (int i = 0; i < 21; ++i)
+	//	rbt.push(new string("ncvuewoivbhgwfufdruhnoidewvbfghpwpuwoiwubvgouwnbuidjbvgrb;vpg"+i%20), new bool(true));
 
-	RedBlackTree<int, int>::Iterator it = rbt.begin();
-
-	for (RedBlackTree<int, int>::Iterator it = rbt.begin(); it!=rbt.end();++it)
-	{
-		cout << **it << endl;
+	//cout << "posortowano!" << endl;
+	////rbt.print();
+	//Map<String, String>map;
+	//map.pull(new String());
+	Vector<String> str;
+	int i = 0;
+	while (true) {
+		String line;
+		try {
+			str.pushLast(new String(String("asd")+String(i)));
+			cout << *str[i] << endl;
+			i++;
+		}
+		catch (EndOfStreamException){
+			break;
+		}
 	}
-
+	
 	getchar();
 	return 0;
 }

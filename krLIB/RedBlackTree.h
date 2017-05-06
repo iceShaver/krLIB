@@ -1,3 +1,7 @@
+/*
+ * TODO: reverse itarators
+ * TODO: deal with getters consts, destructor
+ */
 #pragma once
 #include "String.h"
 #include <string>
@@ -64,7 +68,8 @@ public:
 	};
 	RedBlackTree();
 	~RedBlackTree();
-	void push(Key*key, Value*value);
+	void pushMulti(Key*key, Value*value);
+	void pushOnce(Key*key, Value*value) throw (DuplicateException);
 	Value* pull(Key*key);
 	Value* peek(Key*key);
 	void remove(const Key&key);
@@ -102,6 +107,7 @@ public:
 	~Iterator();
 
 	const Value* operator*()const;
+	const Key* getKey()const;
 	//Type* operator->()const;
 	Iterator& operator++();
 	Iterator operator++(int);
@@ -154,7 +160,7 @@ RedBlackTree<Key, Value>::~RedBlackTree()
 }
 
 template <class Key, class Value>
-void RedBlackTree<Key, Value>::push(Key* key, Value* value)
+void RedBlackTree<Key, Value>::pushMulti(Key* key, Value* value)
 {
 	Node*Y;
 
@@ -243,6 +249,13 @@ void RedBlackTree<Key, Value>::push(Key* key, Value* value)
 }
 
 template <class Key, class Value>
+void RedBlackTree<Key, Value>::pushOnce(Key* key, Value* value)
+{
+	if (find(key)) throw DuplicateException();
+	pushMulti(key, value);
+}
+
+template <class Key, class Value>
 Value* RedBlackTree<Key, Value>::pull(Key* key)
 {
 	Node * foundNode = find(key);
@@ -317,11 +330,18 @@ void RedBlackTree<Key, Value>::DFSRelease(Node* root)
 template <class Key, class Value>
 typename RedBlackTree<Key, Value>::Node* RedBlackTree<Key, Value>::find(const Key* key)
 {
+	if (root == &sentinel)
+		return nullptr;
 	Node * result = root;
-	while ((root != &sentinel) && (*(result->key) != *key))
-		if (*key < *(result->key))result = result->left;
-		else result = result->right;
-		if (result == &sentinel)return nullptr;
+	while ((root != &sentinel)
+		&& (*(result->key) != *key)) {
+		if (*key < *(result->key))
+			result = result->left;
+		else
+			result = result->right;
+		if (result == &sentinel)
+			return nullptr;
+	}
 		return result;
 }
 
@@ -575,6 +595,13 @@ const Value* RedBlackTree<Key, Value>::Iterator::operator*() const
 {
 	if (!node || end) throw NullReferenceException();
 	return node->value;
+}
+
+template <class Key, class Value>
+const Key* RedBlackTree<Key, Value>::Iterator::getKey() const
+{
+	if (!node || end) throw NullReferenceException();
+	return node->key;
 }
 
 template <class Key, class Value>

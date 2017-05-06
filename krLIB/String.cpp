@@ -226,6 +226,11 @@ bool String::operator==(const String& other) const
 	return false;
 }
 
+bool String::operator!=(const String& other) const
+{
+	return !operator==(other);
+}
+
 bool String::operator>(const String& other) const
 {
 	if (compare(*this, other) == 1)return true;
@@ -330,7 +335,7 @@ String& String::trim()
 	char*ptr = array;
 	for (int i = 0; i < length; ++i)
 	{
-		if (*ptr != ' ')break;
+		if (*ptr != ' '&&*ptr!='\n')break;
 		trimStartIndex++;
 		ptr++;
 	}
@@ -349,7 +354,7 @@ String& String::trim()
 	size_t trimStopIndex = length - 1;
 	for (int i = 0; i < length; ++i)
 	{
-		if (*ptr != ' ') break;
+		if (*ptr != ' '&&*ptr!='\n') break;
 		trimStopIndex--;
 		ptr--;
 	}

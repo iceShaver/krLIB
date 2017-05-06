@@ -1,7 +1,9 @@
 //
 // Created by kamil on 31.03.17.
 //
-
+/*
+ * TODO: optimize compare operators
+ */
 #ifndef KROLIB_STRING_H
 #define KROLIB_STRING_H
 
@@ -74,6 +76,7 @@ public:
 	String &operator=(const String&);
 	char& operator[](size_t index) const throw(OutOfRangeException);
 	bool operator==(const String&other) const;
+	bool operator!=(const String&other)const;
 	bool operator>(const String&other)const;
 	bool operator<(const String&other)const;
 	bool operator<=(const String&other)const;

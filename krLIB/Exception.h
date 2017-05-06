@@ -13,3 +13,6 @@ class InvalidArgumentException : Exception {};
 class NotImplementedException : Exception {};
 class NegativeArraySizeException : Exception {};
 class NullReferenceException : Exception {};
+class DuplicateException : Exception {};
+class EndOfFileException : Exception {};
+class EndOfStreamException : Exception {};

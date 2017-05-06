@@ -1,5 +1,5 @@
 #include "Console.h"
-
+#include <cstdio>
 
 
 Console::Console()

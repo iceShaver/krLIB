@@ -1,16 +1,11 @@
 #include "List.h"
 #include <iostream>
 #include "String.h"
-#include <string>
 #include <sstream>
-#include <ctime>
+//#include <ctime>
 #include "Stack.h"
-#include <string>
 #include "Vector.h"
-#include <future>
-#include <ostream>
-#include <cctype>
-#include <map>
+//#include <ostream>
 #include "RedBlackTree.h"
 #include "Map.h"
 #include "Console.h"
@@ -185,20 +180,13 @@ int main(int argc, char* argv[])
 	////rbt.print();
 	//Map<String, String>map;
 	//map.pull(new String());
-	Vector<String> str;
-	int i = 0;
-	while (true) {
-		String line;
-		try {
-			str.pushLast(new String(String("asd")+String(i)));
-			cout << *str[i] << endl;
-			i++;
-		}
-		catch (EndOfStreamException){
-			break;
-		}
-	}
-	
+
+
+
+
+	String liczba = "@14756";
+	//int li = (long long)liczba;
+	cout << liczba.readSegment() << endl;
 	getchar();
 	return 0;
 }

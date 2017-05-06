@@ -5,10 +5,8 @@
 
 #ifndef KROLIB_VECTOR_H
 #define KROLIB_VECTOR_H
-
-#include <cstddef>
 #include "Exception.h"
-
+#include <cstddef>
 enum SizeManagement {
 	Static, Dynamic
 };
@@ -26,6 +24,7 @@ public:
 	Wrapper operator[](size_t index);
 	const Type*operator[](size_t index) const;
 	Type * GetLast();
+	size_t getTailIndex() const;
 	void pushLast(Type*object);
 	size_t getSize() const;
 	Iterator begin()const;
@@ -93,16 +92,19 @@ template<class Type>
 Vector<Type>::Vector() : Vector(1, Dynamic) {}
 
 template <class Type>
-Vector<Type>::Vector(const Vector& other):sizeManagement(other.sizeManagement),array(new Type*[other.size]), size(other.size),tailIndex(other.tailIndex)
+Vector<Type>::Vector(const Vector& other) : sizeManagement(other.sizeManagement), array(new Type*[other.size]), size(other.size), tailIndex(other.tailIndex)
 {
 	for (int i = 0; i < size; ++i)
-		*(array[i]) = *(other.array[i]);
-	lastPtr=array+size-1;
+		if (other.array[i])
+			array[i] = new Type(*other.array[i]);
+		else
+			array[i] = nullptr;
+	lastPtr = array + size - 1;
 }
 
 template<class Type>
-Vector<Type>::Vector(size_t size, SizeManagement sizeManagement):tailIndex(0) {
-	if (size < 0) throw NegativeArraySizeException();
+Vector<Type>::Vector(size_t size, SizeManagement sizeManagement) :tailIndex(0) {
+	//if (size < 0) throw NegativeArraySizeException();
 	array = new Type*[size]();
 	this->size = size;
 	lastPtr = array + size - 1;
@@ -131,6 +133,12 @@ template <class Type>
 Type* Vector<Type>::GetLast()
 {
 	return *lastPtr;
+}
+
+template <class Type>
+size_t Vector<Type>::getTailIndex() const
+{
+	return tailIndex;
 }
 
 template <class Type>
@@ -183,7 +191,8 @@ Vector<Type>::Wrapper::operator Type*() const
 {
 	if (index < arr->size && index >= 0)
 		return *(this->arr->array + index);
-	throw OutOfRangeException();
+	//throw OutOfRangeException();
+	return nullptr;
 }
 template <class Type>
 Vector<Type>::Wrapper::operator Type() const
@@ -326,7 +335,7 @@ bool Vector<Type>::Iterator::operator<=(const Iterator& other) const
 }
 
 template <class Type>
-Vector<Type>::Iterator::Iterator(Type** ptr): ptr(ptr)
+Vector<Type>::Iterator::Iterator(Type** ptr) : ptr(ptr)
 {
 }
 

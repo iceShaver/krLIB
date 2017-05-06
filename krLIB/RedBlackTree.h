@@ -4,8 +4,7 @@
  */
 #pragma once
 #include "String.h"
-#include <string>
-using namespace std;
+#include <iostream>
 enum Color { RED, BLACK };
 template <class Key, class Value>
 class RedBlackTree

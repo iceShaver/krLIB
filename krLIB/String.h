@@ -8,10 +8,9 @@
 #define KROLIB_STRING_H
 
 
-#include <cstring>
-#include <iostream>
 #include "Exception.h"
-
+#include "Vector.h"
+#include <iostream>
 class String {
 public:
 	class Iterator;
@@ -19,9 +18,11 @@ public:
 	~String();
 	String(const String&);
 	//____________________________________Useful static functions__________________________________________
+	static bool isDigit(const char&character);
 	static bool isLetter(const char&character);
 	static bool isCapitalLetter(const char&character);
 	static bool isLowerCaseLetter(const char&character);
+	static bool isOperatorSymbol(const char&character);
 	static char toLower(const char&character);
 	static char toUpper(const char&character);
 
@@ -87,6 +88,11 @@ public:
 	String&prepend(const String&);
 	String substring(size_t beginIndex, size_t count)const throw(OutOfRangeException);
 	String substring(size_t beginIndex)const throw(OutOfRangeException);
+	Vector<String> split(const char & splitter);
+	String readOnlyLettersWord() const;
+	String readDecimalIntegerNumber()const;
+	String readSegment()const;
+	String readOperator()const;
 	String&toLower();
 	String&toUpper();
 	String&trim();

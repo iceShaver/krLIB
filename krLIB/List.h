@@ -5,7 +5,6 @@
 
 #ifndef KRLIB_LIST_H
 #define KRLIB_LIST_H
-#include <cstddef>
 #include "Exception.h"
 
 //________________________________List header____________________________________
@@ -327,7 +326,6 @@ template<class Type>
 bool List<Type>::PushFirst(Type *object) {
 	if (object == nullptr) {
 		throw NullReferenceException();
-		return false;
 	}
 	Node * element = new Node;
 	elementsNumber++;
@@ -354,8 +352,6 @@ bool List<Type>::PushLast(Type *object) {
 	Node *element = new Node;
 	if (object == nullptr) {
 		throw NullReferenceException();
-		printf("Given pointer is nullptr\n");
-		return false;
 	}
 	elementsNumber++;
 	//If there is no elements in the list

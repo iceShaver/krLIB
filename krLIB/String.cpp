@@ -3,6 +3,8 @@
 //
 #include "String.h"
 #include "Exception.h"
+#include <cstdio>
+#include <iostream>
 String::String() : array(nullptr), capacity(1), length(0) {}
 
 String::String(const char * cstring) : capacity(1) {
@@ -23,8 +25,11 @@ String::operator const char*() const
 
 String::operator long long() const
 {
-	throw NotImplementedException();
+	long long result;
+	if (!sscanf_s(array, "%d", &result)) throw BadIntegerCastException();
+	return result;
 }
+
 
 String::operator unsigned long long() const
 {
@@ -42,6 +47,12 @@ String::String(const String& newString)
 	capacity = newString.capacity;
 	array = new char[capacity];
 	copy(newString.array, array, length);
+}
+
+bool String::isDigit(const char& character)
+{
+	if (character >= 48 && character <= 57)return true;
+	return false;
 }
 
 bool String::isLetter(const char& character)
@@ -64,6 +75,24 @@ bool String::isLowerCaseLetter(const char& character)
 		return true;
 	return false;
 
+}
+
+bool String::isOperatorSymbol(const char& character)
+{
+	if (character == '!'
+		|| character == '%'
+		|| character == '&'
+		|| character == '*'
+		|| character == '+'
+		|| character == '-'
+		|| character == '/'
+		|| character == '<'
+		|| character == '='
+		|| character == '>'
+		|| character == '^'
+		|| character == '|')
+		return true;
+	return false;
 }
 
 char String::toLower(const char& character)
@@ -284,9 +313,9 @@ String& String::prepend(const String&prependedString)
 
 String String::substring(size_t beginIndex, size_t count) const throw(OutOfRangeException)
 {
-	if (beginIndex>=length) return String("");
+	if (beginIndex >= length) return String("");
 	if (beginIndex >= length) throw OutOfRangeException();
-	if (count > length)count = length-beginIndex;
+	if (count > length)count = length - beginIndex;
 	//if (beginIndex > count) throw InvalidArgumentException();
 	String result;
 	result.capacity = result.length = count;
@@ -303,6 +332,68 @@ String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 	result.array = new char[capacity];
 	copy(array + beginIndex, result.array, result.length);
 	return result;
+}
+
+Vector<String> String::split(const char &splitter)
+{
+	Vector<String> result;
+	short i = 0;
+	for (char c : *this)
+	{
+		if (!result[i])
+			result[i] = new String;
+		if (c != splitter)
+			*(result[i]) += c;
+		else
+			i++;
+	}
+	return result;
+}
+
+String String::readOnlyLettersWord() const
+{
+	size_t count = 0;
+	for (char character : *this)
+	{
+		if (!isLetter(character)) break;
+		count++;
+	}
+	return substring(0, count);
+}
+
+String String::readDecimalIntegerNumber() const
+{
+	size_t count = 0;
+	for (char character : *this)
+	{
+		if (!isDigit(character)) break;
+		count++;
+	}
+	return substring(0, count);
+}
+
+/**
+ * \brief read and return string of char of one "type"
+ * if "type" not recognized returns one char
+ * \return String of matching chars
+ */
+String String::readSegment() const
+{
+	if (isDigit(array[0])) return readDecimalIntegerNumber();
+	if (isLetter(array[0])) return readOnlyLettersWord();
+	if (isOperatorSymbol(array[0])) return readOperator();
+	return substring(0, 1);
+}
+
+String String::readOperator() const
+{
+	size_t count = 0;
+	for (char c : *this)
+	{
+		if (!isOperatorSymbol(c)) break;
+		count++;
+	}
+	return substring(0, count);
 }
 
 String& String::toLower()
@@ -335,7 +426,7 @@ String& String::trim()
 	char*ptr = array;
 	for (int i = 0; i < length; ++i)
 	{
-		if (*ptr != ' '&&*ptr!='\n')break;
+		if (*ptr != ' '&&*ptr != '\n')break;
 		trimStartIndex++;
 		ptr++;
 	}
@@ -354,7 +445,7 @@ String& String::trim()
 	size_t trimStopIndex = length - 1;
 	for (int i = 0; i < length; ++i)
 	{
-		if (*ptr != ' '&&*ptr!='\n') break;
+		if (*ptr != ' '&&*ptr != '\n') break;
 		trimStopIndex--;
 		ptr--;
 	}
@@ -531,7 +622,7 @@ bool String::Iterator::operator<=(const Iterator& other) const
 	return ptr <= other.ptr;
 }
 
-String::Iterator::Iterator(Type* ptr):ptr(ptr)
+String::Iterator::Iterator(Type* ptr) :ptr(ptr)
 {
 
 }

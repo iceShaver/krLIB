@@ -41,6 +41,12 @@ String::operator double() const
 	throw NotImplementedException();
 }
 
+String::operator bool() const
+{
+	if (length)return true;
+	return false;
+}
+
 String::String(const String& newString)
 {
 	length = newString.length;
@@ -92,6 +98,27 @@ bool String::isOperatorSymbol(const char& character)
 		|| character == '^'
 		|| character == '|')
 		return true;
+	return false;
+}
+
+bool String::isOperator(String symbol)
+{
+	if (symbol == "="
+		|| symbol == "=="
+		|| symbol == "!="
+		|| symbol == ">="
+		|| symbol == "<="
+		|| symbol == "<"
+		|| symbol == ">"
+		|| symbol == "+"
+		|| symbol == "-"
+		|| symbol == "/"
+		|| symbol == "*"
+		|| symbol == "%"
+		|| symbol == "&"
+		|| symbol == "|"
+		|| symbol == "!"
+		) return true;
 	return false;
 }
 
@@ -393,7 +420,13 @@ String String::readOperator() const
 		if (!isOperatorSymbol(c)) break;
 		count++;
 	}
-	return substring(0, count);
+	String result = substring(0, count);
+	while (!isOperator(result))
+	{
+		result = result.substring(0, result.getLength() - 1);
+		if (result == "") return result;
+	}
+	return result;
 }
 
 String& String::toLower()

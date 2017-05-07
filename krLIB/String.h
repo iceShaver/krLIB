@@ -23,6 +23,7 @@ public:
 	static bool isCapitalLetter(const char&character);
 	static bool isLowerCaseLetter(const char&character);
 	static bool isOperatorSymbol(const char&character);
+	static bool isOperator(String symbol);
 	static char toLower(const char&character);
 	static char toUpper(const char&character);
 
@@ -70,6 +71,7 @@ public:
 	 * \brief NOT IMPLEMENTED
 	 */
 	explicit operator double()const;
+	explicit operator bool()const;
 
 
 	//___________________________________________Operators_________________________________________________

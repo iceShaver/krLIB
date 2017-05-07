@@ -142,7 +142,7 @@ private:
 
 String test()
 {
-	String result;
+	String result = String(String("asd"));
 	for (int i = 0; i < 1000; ++i)
 	{
 		result = "asd";
@@ -204,11 +204,11 @@ int main(int argc, char* argv[])
 	////int li = (long long)liczba;
 	//cout << liczba.readSegment() << endl;
 	//String test = "a=(-b)";
-	while (true)
-	{
-		test();
-	}
-
+	//while (true)
+	//{
+	//	test();
+	//}
+	String('4');
 
 	getchar();
 	return 0;

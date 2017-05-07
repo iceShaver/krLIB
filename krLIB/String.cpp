@@ -10,6 +10,7 @@ String::String() : array(new char[1]), capacity(1), length(0) {}
 String::String(const char * cstring) : capacity(1) {
 	length = getCStringLength(cstring);
 	capacity = length;
+	if (!capacity) capacity = 1;
 	array = new char[capacity];
 	copy(cstring, array, length);
 }
@@ -224,31 +225,37 @@ String::Iterator String::end() const
 
 String::String(const int&number)
 {
+	array = nullptr;
 	*this = parseInt(number);
 }
 
 String::String(const long long&number)
 {
+	array = nullptr;
 	*this = parseInt(number);
 }
 
 String::String(const unsigned long long&number)
 {
+	array = nullptr;
 	*this = parseUInt(number);
 }
 
 String::String(const float&number)
 {
+	array = nullptr;
 	*this = parseDouble(number);
 }
 
 String::String(const double&number)
 {
+	array = nullptr;
 	*this = parseDouble(number);
 }
 
 String::String(const char&character)
 {
+	array = nullptr;
 	*this = parseChar(character);
 }
 
@@ -272,6 +279,7 @@ String& String::operator+=(const String& appendedString)
 
 String& String::operator=(const String&other)
 {
+	if(array)
 	delete[] array;
 	capacity = other.length;
 	length = other.length;

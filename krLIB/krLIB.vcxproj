@@ -142,7 +142,6 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="RedBlackTree.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MultiMap.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="List.h" />
@@ -154,7 +153,6 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="RedBlackTree.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MultiMap.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="List.cpp" />

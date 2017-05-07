@@ -6,6 +6,7 @@
 #include "String.h"
 #include <iostream>
 enum Color { RED, BLACK };
+enum Duplicates{FORBID, IGNORE, ALLOW, OVERRIDE};
 template <class Key, class Value>
 class RedBlackTree
 {
@@ -65,10 +66,10 @@ public:
 			return *lhs.key >= *rhs.key;
 		}
 	};
-	RedBlackTree();
+	explicit RedBlackTree(Duplicates=FORBID);
 	~RedBlackTree();
-	void pushMulti(Key*key, Value*value);
-	void pushOnce(Key*key, Value*value) throw (DuplicateException);
+	void push(Key*key, Value*value)throw(DuplicateException);
+	void update(Key*key, Value*value)throw(NotFoundException);
 	Value* pull(Key*key);
 	Value* peek(Key*key);
 	void remove(const Key&key);
@@ -93,6 +94,7 @@ private:
 	void remove(Node*nodeToRemove);
 	Node sentinel;
 	Node*root;
+	Duplicates duplicatesBehaviour;
 	friend Iterator;
 };
 
@@ -136,7 +138,7 @@ private:
 
 
 template <class Key, class Value>
-RedBlackTree<Key, Value>::RedBlackTree()
+RedBlackTree<Key, Value>::RedBlackTree(Duplicates duplicatesBehaviour)
 {
 	cr = cl = cp = "  ";
 	cr[0] = 218;
@@ -149,7 +151,7 @@ RedBlackTree<Key, Value>::RedBlackTree()
 	sentinel.left = &sentinel;
 	sentinel.right = &sentinel;
 	root = &sentinel;
-
+	this->duplicatesBehaviour = duplicatesBehaviour;
 }
 
 template <class Key, class Value>
@@ -158,11 +160,30 @@ RedBlackTree<Key, Value>::~RedBlackTree()
 	remove(root);
 }
 
-template <class Key, class Value>
-void RedBlackTree<Key, Value>::pushMulti(Key* key, Value* value)
-{
-	Node*Y;
 
+template <class Key, class Value>
+void RedBlackTree<Key, Value>::push(Key* key, Value* value) throw(DuplicateException)
+{
+	if(find(key))
+	{
+		switch (duplicatesBehaviour)
+		{
+		case FORBID:
+			throw DuplicateException();
+			break;
+		case IGNORE:
+			return;
+			break;
+		case ALLOW:
+			break;
+		case OVERRIDE:
+			update(key, value);
+			break;
+		default:
+			break;
+		}
+	}
+	Node*Y;
 	Node * X = new Node;
 	X->left = &sentinel;
 	X->right = &sentinel;
@@ -220,7 +241,7 @@ void RedBlackTree<Key, Value>::pushMulti(Key* key, Value* value)
 			break;
 		}
 		else
-		{                  
+		{
 			Y = X->parent->parent->left;
 
 			if (Y->color == RED)
@@ -245,13 +266,16 @@ void RedBlackTree<Key, Value>::pushMulti(Key* key, Value* value)
 		}
 	}
 	root->color = BLACK;
+
 }
 
 template <class Key, class Value>
-void RedBlackTree<Key, Value>::pushOnce(Key* key, Value* value)
+void RedBlackTree<Key, Value>::update(Key* key, Value* value) throw(NotFoundException)
 {
-	if (find(key)) throw DuplicateException();
-	pushMulti(key, value);
+	Node*node = find(key);
+	if (!node)throw NotFoundException();
+	delete node->value;
+	node->value = value;
 }
 
 template <class Key, class Value>

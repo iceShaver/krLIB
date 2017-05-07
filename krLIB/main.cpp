@@ -184,9 +184,14 @@ int main(int argc, char* argv[])
 
 
 
-	String liczba = "@14756";
-	//int li = (long long)liczba;
-	cout << liczba.readSegment() << endl;
+	//String liczba = "@14756";
+	////int li = (long long)liczba;
+	//cout << liczba.readSegment() << endl;
+
+
+
+
+
 	getchar();
 	return 0;
 }

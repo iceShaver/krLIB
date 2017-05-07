@@ -155,6 +155,81 @@ String test()
 	}
 	return result;
 }
+Map <String, int> operators(Duplicates::FORBID);
+void introduceOperators()
+{
+	operators.push(new String('='), new int(0));
+
+	operators.push(new String('|'), new int(1));
+
+	operators.push(new String('&'), new int(2));
+
+	operators.push(new String('!='), new int(3));
+	operators.push(new String('=='), new int(3));
+
+	operators.push(new String('<'), new int(4));
+	operators.push(new String('>'), new int(4));
+	operators.push(new String('<='), new int(4));
+	operators.push(new String('>='), new int(4));
+
+	operators.push(new String('+'), new int(5));
+	operators.push(new String('-'), new int(5));
+
+	operators.push(new String('/'), new int(6));
+	operators.push(new String('*'), new int(6));
+	operators.push(new String('%'), new int(6));
+
+	operators.push(new String('!'), new int(7));
+	operators.push(new String('-u'), new int(7));
+}
+String convertToRPN(String expression)
+{
+	Stack<String> stack;
+	String result;
+	String token;
+	while (expression)
+	{
+		token = expression.readSegment();
+		expression = expression.substring(token.getLength());
+		if (String::isLetter(token[0]) || String::isDigit(token[0]))
+			result += token;
+		else if (token == "(")
+			stack.Push(new String(token));
+		else if (token == ")")
+			while (stack.GetSize())
+			{
+				String *tmp = stack.Pop();
+				token = *tmp;
+				delete tmp;
+				if (token == "(") break;
+				else result += token;
+			}
+		else
+		{
+			const int * priority = operators.peek(&token);
+			while (stack.GetSize())
+			{
+				String*top = stack.Pop();
+				if (*top == "(" || *operators.peek(top)<*priority)
+				{
+					stack.Push(new String(*top));
+					delete top;
+					break;
+				}
+				result += *top;
+				delete top;
+			}
+			stack.Push(new String(token));
+		}
+	}
+	while (stack.GetSize())
+	{
+		String * tmp = stack.Pop();
+		result += *tmp;
+		delete tmp;
+	}
+	return result;
+}
 int main(int argc, char* argv[])
 {
 	/*RedBlackTree<int, int> rbt;
@@ -204,11 +279,13 @@ int main(int argc, char* argv[])
 	////int li = (long long)liczba;
 	//cout << liczba.readSegment() << endl;
 	//String test = "a=(-b)";
-	//while (true)
-	//{
-	//	test();
-	//}
-	String('4');
+	introduceOperators();
+	String result;
+	while (true)
+	{
+		result = convertToRPN("b*c-(d+e)*4");
+	}
+
 
 	getchar();
 	return 0;

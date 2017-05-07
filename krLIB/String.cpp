@@ -358,11 +358,12 @@ String& String::prepend(const String&prependedString)
 
 String String::substring(size_t beginIndex, size_t count) const throw(OutOfRangeException)
 {
-	if (beginIndex >= length) return String("");
-	if (beginIndex >= length) throw OutOfRangeException();
+	if (beginIndex >= length) return String();
 	if (count > length)count = length - beginIndex;
 	//if (beginIndex > count) throw InvalidArgumentException();
 	String result;
+	if (result.array)
+		delete[]result.array;
 	result.capacity = result.length = count;
 	result.array = new char[capacity];
 	copy(array + beginIndex, result.array, result.length);
@@ -371,9 +372,10 @@ String String::substring(size_t beginIndex, size_t count) const throw(OutOfRange
 
 String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 {
-	if (beginIndex > length)throw OutOfRangeException();
-	if (beginIndex == length) return String();
+	if (beginIndex >= length) return String();
 	String result;
+	if (result.array)
+		delete[]result.array;
 	result.capacity = result.length = length - beginIndex;
 	result.array = new char[capacity];
 	copy(array + beginIndex, result.array, result.length);

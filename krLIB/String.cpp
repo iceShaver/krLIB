@@ -5,7 +5,7 @@
 #include "Exception.h"
 #include <cstdio>
 #include <iostream>
-String::String() : array(nullptr), capacity(1), length(0) {}
+String::String() : array(new char[1]), capacity(1), length(0) {}
 
 String::String(const char * cstring) : capacity(1) {
 	length = getCStringLength(cstring);
@@ -272,6 +272,7 @@ String& String::operator+=(const String& appendedString)
 
 String& String::operator=(const String&other)
 {
+	delete[] array;
 	capacity = other.length;
 	length = other.length;
 	array = new char[capacity];

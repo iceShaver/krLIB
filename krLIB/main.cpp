@@ -139,6 +139,22 @@ private:
 	int value;
 };
 
+
+String test()
+{
+	String result;
+	for (int i = 0; i < 1000; ++i)
+	{
+		result = "asd";
+		Stack<String> stack;
+		stack.Push(new String("asd"));
+		String * tmp = stack.Pop();
+		result = *tmp;
+		result += *tmp;
+		delete tmp;
+	}
+	return result;
+}
 int main(int argc, char* argv[])
 {
 	/*RedBlackTree<int, int> rbt;
@@ -187,11 +203,10 @@ int main(int argc, char* argv[])
 	//String liczba = "@14756";
 	////int li = (long long)liczba;
 	//cout << liczba.readSegment() << endl;
-	String test = "a=(-b)";
-	while (test)
+	//String test = "a=(-b)";
+	while (true)
 	{
-		String asd = test.readSegment();
-		test = test.substring(asd.getLength());
+		test();
 	}
 
 

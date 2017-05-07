@@ -96,7 +96,12 @@ bool String::isOperatorSymbol(const char& character)
 		|| character == '='
 		|| character == '>'
 		|| character == '^'
-		|| character == '|')
+		|| character == '|'
+		|| character == ')'
+		|| character == '('
+		|| character == '}'
+		|| character == '{'
+		)
 		return true;
 	return false;
 }
@@ -118,6 +123,10 @@ bool String::isOperator(String symbol)
 		|| symbol == "&"
 		|| symbol == "|"
 		|| symbol == "!"
+		|| symbol == "("
+		|| symbol == ")"
+		|| symbol == "{"
+		|| symbol == "}"
 		) return true;
 	return false;
 }
@@ -353,7 +362,8 @@ String String::substring(size_t beginIndex, size_t count) const throw(OutOfRange
 
 String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 {
-	if (beginIndex >= length)throw OutOfRangeException();
+	if (beginIndex > length)throw OutOfRangeException();
+	if (beginIndex == length) return String();
 	String result;
 	result.capacity = result.length = length - beginIndex;
 	result.array = new char[capacity];

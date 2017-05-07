@@ -187,20 +187,12 @@ int main(int argc, char* argv[])
 	//String liczba = "@14756";
 	////int li = (long long)liczba;
 	//cout << liczba.readSegment() << endl;
-	String test = "a=-b";
-	String lVal = test.readSegment();
-	test = test.substring(lVal.getLength());
-	String op = test.readSegment();
-	test = test.substring(lVal.getLength());
-	while(test)
+	String test = "a=(-b)";
+	while (test)
 	{
-		String res = test.readSegment();
-		if(String::isLetter(res[0])) 
-
-
-		test = test.substring(res.getLength());
+		String asd = test.readSegment();
+		test = test.substring(asd.getLength());
 	}
-
 
 
 	getchar();

@@ -50,6 +50,12 @@ String::operator bool() const
 
 String::String(const String& newString)
 {
+	if (newString == nullptr)
+	{
+		String();
+		return;
+	}
+	//if (array)delete[]array;
 	length = newString.length;
 	capacity = newString.capacity;
 	array = new char[capacity];
@@ -207,6 +213,7 @@ String::~String()
 }
 
 size_t String::getCStringLength(const char * cstring) {
+	if (!cstring) return 0;
 	size_t length = 0;
 	const char * ptr = cstring;
 	while (*(ptr++)) length++;
@@ -382,6 +389,16 @@ String String::substring(size_t beginIndex) const throw(OutOfRangeException)
 	return result;
 }
 
+String String::replace(const char& from, const char& to) const
+{
+	String result = *this;
+	for (int i = 0; i < result.length; ++i)
+			if (result.array[i] == from)
+				result.array[i] = to;
+
+	return result;
+}
+
 Vector<String> String::split(const char &splitter)
 {
 	Vector<String> result;
@@ -427,6 +444,7 @@ String String::readDecimalIntegerNumber() const
  */
 String String::readSegment() const
 {
+	//TODO: ' ' ommiting
 	if (isDigit(array[0])) return readDecimalIntegerNumber();
 	if (isLetter(array[0])) return readOnlyLettersWord();
 	if (isOperatorSymbol(array[0])) return readOperator();
@@ -474,8 +492,9 @@ String& String::toUpper()
 	return *this;
 }
 
-String& String::trim()
+String String::trim() const
 {
+	String result = *this;
 	size_t trimStartIndex = 0;
 	char*ptr = array;
 	for (int i = 0; i < length; ++i)
@@ -488,12 +507,13 @@ String& String::trim()
 	{
 		int newLength, newCapacity;
 		newLength = newCapacity = length - trimStartIndex;
-		char * newArray = new char[newCapacity];
-		copy(array + trimStartIndex, newArray, newLength);
-		length = newLength;
-		capacity = newCapacity;
-		delete[] array;
-		array = newArray;
+		delete[] result.array;
+		result.array = new char[newCapacity];
+		copy(array + trimStartIndex, result.array, newLength);
+		result.length = newLength;
+		result.capacity = newCapacity;
+		//delete[] array;
+		//array = newArray;
 	}
 	ptr = array + length - 1;
 	size_t trimStopIndex = length - 1;
@@ -505,9 +525,9 @@ String& String::trim()
 	}
 	if (trimStopIndex != length - 1)
 	{
-		length = trimStopIndex + 1;
+		result.length = trimStopIndex + 1;
 	}
-	return *this;
+	return result;
 }
 
 const char* String::c_str() const

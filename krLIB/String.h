@@ -90,6 +90,7 @@ public:
 	String&prepend(const String&);
 	String substring(size_t beginIndex, size_t count)const throw(OutOfRangeException);
 	String substring(size_t beginIndex)const throw(OutOfRangeException);
+	String replace(const char&from, const char&to)const;
 	Vector<String> split(const char & splitter);
 	String readOnlyLettersWord() const;
 	String readDecimalIntegerNumber()const;
@@ -97,7 +98,7 @@ public:
 	String readOperator()const;
 	String&toLower();
 	String&toUpper();
-	String&trim();
+	String trim() const;
 
 
 	//________________________________________Others_______________________________________________________

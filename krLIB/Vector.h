@@ -23,6 +23,7 @@ public:
 	~Vector();
 	Wrapper operator[](size_t index);
 	const Type*operator[](size_t index) const;
+	Vector<Type>&operator=(const Vector<Type>&other);
 	Type * GetLast();
 	size_t getTailIndex() const;
 	void pushLast(Type*object);
@@ -112,8 +113,8 @@ Vector<Type>::Vector(size_t size, SizeManagement sizeManagement) :tailIndex(0) {
 }
 template<class Type>
 Vector<Type>::~Vector() {
-	for (int i = 0; i < size; ++i)
-		delete array[i];
+	/*for (int i = 0; i < size; ++i)
+		delete array[i];*/
 	delete[] array;
 }
 
@@ -127,6 +128,17 @@ const Type *Vector<Type>::operator[](size_t index) const {
 	if (index < size && index >= 0)
 		return *(array + index);
 	throw OutOfRangeException();
+}
+
+template <class Type>
+Vector<Type>& Vector<Type>::operator=(const Vector<Type>& other)
+{
+
+	for (Type* elem : other)
+	{
+		this->pushLast(new Type(*elem));
+	}
+	return *this;
 }
 
 template <class Type>
@@ -162,7 +174,9 @@ typename Vector<Type>::Iterator Vector<Type>::begin() const
 template <class Type>
 typename Vector<Type>::Iterator Vector<Type>::end() const
 {
-	return Iterator(lastPtr + 1);
+	//return Iterator(lastPtr + 1);
+	return Iterator(&array[tailIndex]);
+
 }
 
 template<class Type>

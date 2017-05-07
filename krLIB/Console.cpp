@@ -22,3 +22,18 @@ String Console::readLine()
 	String result(tmp);
 	return result.trim();
 }
+
+String Console::readInput()
+{
+	String result;
+	char tmp[1002];
+	fseek(stdin, 0, SEEK_END);
+	while (fgets(tmp, 1001, stdin))
+	{
+		if (tmp[0] == '\n') break;
+		result += tmp;
+
+	}
+		
+	return result;
+}

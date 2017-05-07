@@ -5,18 +5,22 @@ class Map : RedBlackTree<Key, Value>
 {
 	typedef RedBlackTree<Key, Value> base;
 public:
-	explicit Map(Duplicates=FORBID);
+	typedef RedBlackTree<Key, Value>::Iterator Iterator;
+	explicit Map(Duplicates = FORBID);
 	~Map();
 	void push(Key*key, Value*value) throw(DuplicateException);
 	void update(Key*key, Value*value) throw(NotFoundException);
 	void remove(Key*key);
+
+	Iterator begin() { return base::begin(); }
+	Iterator end() { return base::end(); };
 	Value*pull(Key*key);
 	const Value*peek(Key*key);
 	void print();
 };
 
 template <class Key, class Value>
-Map<Key, Value>::Map(Duplicates duplicatesBahaviour):RedBlackTree<Key, Value>(duplicatesBahaviour)
+Map<Key, Value>::Map(Duplicates duplicatesBahaviour) :RedBlackTree<Key, Value>(duplicatesBahaviour)
 {
 }
 

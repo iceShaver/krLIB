@@ -292,7 +292,9 @@ Value* RedBlackTree<Key, Value>::pull(Key* key)
 template <class Key, class Value>
 Value* RedBlackTree<Key, Value>::peek(Key* key)
 {
-	return find(key)->value;
+	Node*tmp = find(key);
+	if (!tmp)return nullptr;
+	return tmp->value;
 }
 
 template <class Key, class Value>
